@@ -1,0 +1,38 @@
+// ============================================
+// Dark Gaming Theme - Color Palette
+// ============================================
+
+// --- Core backgrounds ---
+$bg-primary:    #0a0a0f;
+$bg-secondary:  #12121a;
+$bg-surface:    #1a1a2e;
+
+// --- Accent colors ---
+$accent-blue:   #00d4ff;
+$accent-purple: #7b2ff7;
+$accent-pink:   #ff2d75;
+
+// --- Text ---
+$text-primary:   #e0e0e0;
+$text-secondary: #8888a0;
+$text-bright:    #ffffff;
+
+// --- Functional ---
+$nav-height: 96px;
+$border-subtle: #2a2a3e;
+$transition-fast: 0.2s ease;
+
+// --- CSS Custom Properties (runtime theming) ---
+:root {
+  --bg-primary:    #{$bg-primary};
+  --bg-secondary:  #{$bg-secondary};
+  --bg-surface:    #{$bg-surface};
+  --accent-blue:   #{$accent-blue};
+  --accent-purple: #{$accent-purple};
+  --accent-pink:   #{$accent-pink};
+  --text-primary:  #{$text-primary};
+  --text-secondary: #{$text-secondary};
+  --text-bright:   #{$text-bright};
+  --border-subtle: #{$border-subtle};
+  --nav-height:    #{$nav-height};
+}

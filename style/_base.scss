@@ -1,0 +1,91 @@
+@use 'variables' as *;
+
+// --- Minimal reset ---
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: "Bitcount Grid Double", system-ui;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "slnt" 0,
+    "CRSV" 0.5,
+    "ELSH" 0,
+    "ELXP" 0;
+  background-color: $bg-primary;
+  color: $text-primary;
+  min-height: 100vh;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: $accent-blue;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: lighten($accent-blue, 15%);
+  }
+}
+
+// --- Main content area ---
+.main-content {
+  flex: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  padding-top: calc(#{$nav-height} + 2rem);
+}
+
+h1 {
+  color: $text-bright;
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+}
+
+// --- Primary button (reusable) ---
+.btn-primary {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  background: linear-gradient(135deg, $accent-purple, $accent-blue);
+  color: $text-bright;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 300;
+  cursor: pointer;
+  transition: opacity $transition-fast, transform $transition-fast;
+  min-width:  12rem;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    color: $text-bright;
+  }
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+button {
+  @extend .btn-primary;
+  margin-top: 1rem;
+}

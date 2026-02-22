@@ -1,0 +1,82 @@
+@use '../variables' as *;
+
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: $nav-height;
+  background-color: rgba($bg-secondary, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid $border-subtle;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  margin-right: 2.5rem;
+  margin-top: 0.8rem;
+  height: 10rem;
+  width: auto;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 1.75rem;
+  align-items: center;
+
+  li a,
+  li span {
+    color: $text-secondary;
+    font-size: 1.2rem;
+    font-weight: 600;
+    transition: color $transition-fast;
+    cursor: pointer;
+
+    &:hover {
+      color: $text-bright;
+    }
+  }
+
+  // Leptos router adds .active to the current route link
+  li a.active {
+    color: $accent-blue;
+  }
+}
+
+.nav-spacer {
+  flex: 1;
+}
+
+.wallet {
+  display: flex;
+  align-items: center;
+
+  button {
+    margin-top: 0;
+  }
+}
+
+.nav-cta {
+  padding: 0.5rem 1.25rem;
+  background: linear-gradient(135deg, $accent-purple, $accent-blue);
+  color: $text-bright;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity $transition-fast, transform $transition-fast;
+  white-space: nowrap;
+
+  &:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    color: $text-bright;
+  }
+}
