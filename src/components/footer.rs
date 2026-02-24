@@ -6,9 +6,7 @@ pub fn Footer() -> impl IntoView {
         <footer class="site-footer">
             <div class="footer__content">
                 <div class="footer__brand">
-                    <span class="footer__logo">
-                        "Re"<span class="logo-accent">"player"</span>
-                    </span>
+                    <span class="footer__logo">"Re"<span class="logo-accent">"player"</span></span>
                     <p class="footer__tagline">"Replay your favorite games"</p>
                 </div>
                 <div class="footer__links">

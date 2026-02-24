@@ -21,14 +21,12 @@ pub fn Nav() -> impl IntoView {
                     <A href="/how-it-works">"How it works"</A>
                 </li>
                 <li>
-                    <A href="/publish" >
-                        "Publish Games"
-                    </A>
+                    <A href="/publish">"Publish Games"</A>
                 </li>
             </ul>
             <div class="nav-spacer"></div>
             <ErrorBoundary fallback=|errors| view! { <ErrorView errors=errors /> }>
-                <WalletButton   />
+                <WalletButton />
             </ErrorBoundary>
         </nav>
     }

@@ -1,11 +1,15 @@
 mod api;
 pub mod app;
 mod components;
-mod error;
+pub mod config;
+pub mod error;
 mod models;
 mod pages;
 mod server;
+mod solana;
+mod utils;
 mod wallet;
+
 #[cfg(feature = "hydrate")]
 #[wasm_bindgen::prelude::wasm_bindgen]
 pub fn hydrate() {

@@ -18,7 +18,11 @@ wasm-bindgen = { version = "=0.2.100", optional = true }
 js-sys = { version = "=0.3.77", optional = true }
 web-sys = { version = "=0.3.77", optional = true }
 wasm-bindgen-futures = "=0.4.50"
-
+anchor-client = { version = "0.32.1", features = ["async"], optional = true }
+solana-address = { version = "2.2", optional = true }
+serde = { version = "1.0.228", features = ["derive"], optional = true }
+toml = "0.9.8"
+bs58 = "0.5"
 
 [features]
 hydrate = [
@@ -32,6 +36,9 @@ ssr = [
     "dep:axum",
     "dep:tokio",
     "dep:leptos_axum",
+    "dep:anchor-client",
+    "dep:serde",
+    "dep:solana-address",
     "leptos/ssr",
     "leptos_meta/ssr",
     "leptos_router/ssr",
@@ -47,7 +54,7 @@ panic = "abort"
 
 [package.metadata.leptos]
 # The name used by wasm-bindgen/cargo-leptos for the JS/WASM bundle. Defaults to the crate name
-output-name = "replayer-fe"
+#output-name = "replayer-fe"
 
 # The site root folder is where cargo-leptos generate all output. WARNING: all content of this folder will be erased on a rebuild. Use it in your server setup.
 site-root = "target/site"
@@ -65,7 +72,7 @@ style-file = "style/main.scss"
 assets-dir = "public"
 
 # The IP and port (ex: 127.0.0.1:3000) where the server serves the content. Use it in your server setup.
-site-addr = "127.0.0.1:3000"
+#site-addr = "127.0.0.1:3000"
 
 # The port to use for automatic reload monitoring
 reload-port = 3001

@@ -1,7 +1,6 @@
 #[cfg(feature = "hydrate")]
 use wasm_bindgen::prelude::*;
 
-
 #[cfg(feature = "hydrate")]
 #[wasm_bindgen]
 extern "C" {
@@ -19,7 +18,6 @@ extern "C" {
     #[wasm_bindgen(js_namespace = ["window", "solana"], js_name = isPhantom)]
     static IS_PHANTOM: JsValue;
 }
-
 
 #[cfg(feature = "hydrate")]
 pub fn is_phantom_installed() -> bool {

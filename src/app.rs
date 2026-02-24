@@ -20,6 +20,7 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
                     href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&display=swap"
                     rel="stylesheet"
                 />
+                <link rel="icon" type="image/png" href="/replayer.png" />
                 <AutoReload options=options.clone() />
                 <HydrationScripts options />
                 <MetaTags />
