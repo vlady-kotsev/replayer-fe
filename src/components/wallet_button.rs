@@ -1,6 +1,6 @@
+use crate::error::AppError;
 use leptos::prelude::*;
 
-use crate::error::AppError;
 #[component]
 pub fn WalletButton() -> Result<impl IntoView, AppError> {
     #[allow(unused_variables)]

@@ -1,0 +1,1645 @@
+{
+  "address": "3L4ZDN7REkTk97ybn5FS4NUBMmcbQQQjQbKH6kET595c",
+  "metadata": {
+    "name": "replayer",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "add_admin",
+      "discriminator": [
+        5
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "admin_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  100,
+                  109,
+                  105,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "admin"
+              }
+            ]
+          }
+        },
+        {
+          "name": "new_admin",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  100,
+                  109,
+                  105,
+                  110
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.new_admin"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "_args",
+          "type": {
+            "defined": {
+              "name": "AddAdminArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "allocate_game_account",
+      "discriminator": [
+        1
+      ],
+      "accounts": [
+        {
+          "name": "developer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              },
+              {
+                "kind": "arg",
+                "path": "args.game_name"
+              }
+            ]
+          }
+        },
+        {
+          "name": "game_metadata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              },
+              {
+                "kind": "arg",
+                "path": "args.game_name"
+              }
+            ]
+          }
+        },
+        {
+          "name": "blacklisted",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  108,
+                  97,
+                  99,
+                  107,
+                  108,
+                  105,
+                  115,
+                  116,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "AllocateGameArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "blacklist_account",
+      "discriminator": [
+        10
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "admin_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  100,
+                  109,
+                  105,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "admin"
+              }
+            ]
+          }
+        },
+        {
+          "name": "blacklist_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  108,
+                  97,
+                  99,
+                  107,
+                  108,
+                  105,
+                  115,
+                  116,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.address"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "BlacklistAccountArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "buy_game",
+      "discriminator": [
+        7
+      ],
+      "accounts": [
+        {
+          "name": "player",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "game_metadata",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.developer"
+              },
+              {
+                "kind": "arg",
+                "path": "args.game_name"
+              }
+            ]
+          }
+        },
+        {
+          "name": "game_data",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.developer"
+              },
+              {
+                "kind": "arg",
+                "path": "args.game_name"
+              }
+            ]
+          }
+        },
+        {
+          "name": "developer_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  118
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.developer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "collection",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  118,
+                  95,
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.developer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "asset",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101,
+                  95,
+                  107,
+                  101,
+                  121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.developer"
+              },
+              {
+                "kind": "arg",
+                "path": "args.game_name"
+              },
+              {
+                "kind": "account",
+                "path": "player"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "developer_treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  118,
+                  95,
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.developer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "core_program",
+          "address": "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "BuyGameArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "create_developer",
+      "discriminator": [
+        4
+      ],
+      "accounts": [
+        {
+          "name": "developer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "developer_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  118
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "developer_treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  118,
+                  95,
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "developer_collection",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  118,
+                  95,
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "blacklist_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  98,
+                  108,
+                  97,
+                  99,
+                  107,
+                  108,
+                  105,
+                  115,
+                  116,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "core_program",
+          "address": "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "CreateDeveloperArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "finalize_game_upload",
+      "discriminator": [
+        3
+      ],
+      "accounts": [
+        {
+          "name": "developer",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "game_metadata"
+          ]
+        },
+        {
+          "name": "game_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              },
+              {
+                "kind": "account",
+                "path": "game_metadata.game_name",
+                "account": "GameMetadata"
+              }
+            ]
+          }
+        },
+        {
+          "name": "game_metadata",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              },
+              {
+                "kind": "account",
+                "path": "game_metadata.game_name",
+                "account": "GameMetadata"
+              }
+            ]
+          }
+        },
+        {
+          "name": "developer_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  118
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              }
+            ]
+          }
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "init_global_config",
+      "discriminator": [
+        0
+      ],
+      "accounts": [
+        {
+          "name": "initializer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "global_config",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "admin",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  100,
+                  109,
+                  105,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "initializer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "this",
+          "address": "3L4ZDN7REkTk97ybn5FS4NUBMmcbQQQjQbKH6kET595c"
+        },
+        {
+          "name": "program_data"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "InitGlobalStateArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "remove_admin",
+      "discriminator": [
+        6
+      ],
+      "accounts": [
+        {
+          "name": "admin",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "admin_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  100,
+                  109,
+                  105,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "admin"
+              }
+            ]
+          }
+        },
+        {
+          "name": "removed_admin",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  100,
+                  109,
+                  105,
+                  110
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "args.removed_admin"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "_args",
+          "type": {
+            "defined": {
+              "name": "RemoveAdminArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "upload_game_chunk",
+      "discriminator": [
+        2
+      ],
+      "accounts": [
+        {
+          "name": "developer",
+          "writable": true,
+          "signer": true,
+          "relations": [
+            "game_metadata"
+          ]
+        },
+        {
+          "name": "game_data",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  97,
+                  109,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              },
+              {
+                "kind": "account",
+                "path": "game_metadata.game_name",
+                "account": "GameMetadata"
+              }
+            ]
+          }
+        },
+        {
+          "name": "game_metadata",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              },
+              {
+                "kind": "account",
+                "path": "game_metadata.game_name",
+                "account": "GameMetadata"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "UploadGameChunkArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "withdraw_developer_fee",
+      "discriminator": [
+        9
+      ],
+      "accounts": [
+        {
+          "name": "developer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "developer_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  118
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "developer_treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  101,
+                  118,
+                  95,
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "developer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "WithdrawDeveloperFeeArgs"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "withdraw_platform_fee",
+      "discriminator": [
+        8
+      ],
+      "accounts": [
+        {
+          "name": "withdrawer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "admin_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  100,
+                  109,
+                  105,
+                  110
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "withdrawer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_config",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  110,
+                  102,
+                  105,
+                  103
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_treasury",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  114,
+                  101,
+                  97,
+                  115,
+                  117,
+                  114,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "receiver",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "args",
+          "type": {
+            "defined": {
+              "name": "WithdrawPlatfromFeeArgs"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Admin",
+      "discriminator": [
+        5
+      ]
+    },
+    {
+      "name": "Blacklist",
+      "discriminator": [
+        6
+      ]
+    },
+    {
+      "name": "Developer",
+      "discriminator": [
+        2
+      ]
+    },
+    {
+      "name": "GameData",
+      "discriminator": [
+        3
+      ]
+    },
+    {
+      "name": "GameMetadata",
+      "discriminator": [
+        4
+      ]
+    },
+    {
+      "name": "GlobalConfig",
+      "discriminator": [
+        1
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "UninitializedDeveloperTreasury",
+      "msg": "The developer treasury must be initialized"
+    },
+    {
+      "code": 6001,
+      "name": "GameDataLengthOverflow",
+      "msg": "The game data overflows the maximum size"
+    },
+    {
+      "code": 6002,
+      "name": "GameDataChunkLengthOverflow",
+      "msg": "The game data chunk overflows the game size"
+    },
+    {
+      "code": 6003,
+      "name": "InvalidGameName",
+      "msg": "Game name cannot be empty"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidGamePrice",
+      "msg": "Game price cannot be 0"
+    },
+    {
+      "code": 6005,
+      "name": "InvalidGameMaxSupply",
+      "msg": "Game max supply cannot be 0"
+    },
+    {
+      "code": 6006,
+      "name": "Overflow",
+      "msg": "Arithmetic overflow"
+    },
+    {
+      "code": 6007,
+      "name": "GameAlreadyFinalized",
+      "msg": "Game is already finalized"
+    },
+    {
+      "code": 6008,
+      "name": "UnfinalizedGameData",
+      "msg": "Game can be finalized when all data is uploaded"
+    },
+    {
+      "code": 6009,
+      "name": "GameDataDiscrepancy",
+      "msg": "Corrupted game data"
+    },
+    {
+      "code": 6010,
+      "name": "CollectionAlreadyInitialized",
+      "msg": "Collection already initialized"
+    },
+    {
+      "code": 6011,
+      "name": "InvalidCollectionOwner",
+      "msg": "Invalid collection owner"
+    },
+    {
+      "code": 6012,
+      "name": "CollectionNotInitialized",
+      "msg": "Collection not initialized"
+    },
+    {
+      "code": 6013,
+      "name": "AssetAlreadyInitialized",
+      "msg": "Core Asset already initialized"
+    },
+    {
+      "code": 6014,
+      "name": "InvalidFeePercentage",
+      "msg": "Invalid fee percentage"
+    },
+    {
+      "code": 6015,
+      "name": "InvalidFeeAmount",
+      "msg": "Invalid fee amount"
+    },
+    {
+      "code": 6016,
+      "name": "Blacklisted",
+      "msg": "The account is blacklisted"
+    },
+    {
+      "code": 6017,
+      "name": "GameNotInitialized",
+      "msg": "Game not initialized"
+    },
+    {
+      "code": 6018,
+      "name": "GameSupplyReached",
+      "msg": "Game supply reached, no new game keys can be minted"
+    }
+  ],
+  "types": [
+    {
+      "name": "AddAdminArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "new_admin",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Admin",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AllocateGameArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "game_name",
+            "type": "string"
+          },
+          {
+            "name": "game_uri",
+            "type": "string"
+          },
+          {
+            "name": "game_price",
+            "type": "u64"
+          },
+          {
+            "name": "game_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "max_supply",
+            "type": "u64"
+          },
+          {
+            "name": "game_data_length",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Blacklist",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "is_blacklisted",
+            "type": "bool"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BlacklistAccountArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "address",
+            "type": "pubkey"
+          },
+          {
+            "name": "is_blacklisted",
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BuyGameArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "game_name",
+            "type": "string"
+          },
+          {
+            "name": "developer",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CreateDeveloperArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "company_name",
+            "type": "string"
+          },
+          {
+            "name": "collection_uri",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Developer",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "games_published",
+            "type": "u64"
+          },
+          {
+            "name": "treasury_bump",
+            "type": "u8"
+          },
+          {
+            "name": "collection_bump",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameData",
+      "serialization": "bytemuckunsafe",
+      "repr": {
+        "kind": "c",
+        "packed": true
+      },
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "write_index",
+            "type": "u64"
+          },
+          {
+            "name": "length",
+            "type": "u64"
+          },
+          {
+            "name": "is_finalized",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "data",
+            "type": {
+              "array": [
+                "u8",
+                9216
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "GameMetadata",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "data_hash",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "developer",
+            "type": "pubkey"
+          },
+          {
+            "name": "game_name",
+            "type": "string"
+          },
+          {
+            "name": "game_uri",
+            "type": "string"
+          },
+          {
+            "name": "price",
+            "type": "u64"
+          },
+          {
+            "name": "current_supply",
+            "type": "u64"
+          },
+          {
+            "name": "max_supply",
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GlobalConfig",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "platform_fee",
+            "type": "u64"
+          },
+          {
+            "name": "treasury_bump",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "InitGlobalStateArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "platform_fee",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "RemoveAdminArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "removed_admin",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UploadGameChunkArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "data_chunk",
+            "type": "bytes"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WithdrawDeveloperFeeArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WithdrawPlatfromFeeArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "ADMIN_SEED",
+      "type": "bytes",
+      "value": "[97, 100, 109, 105, 110]"
+    },
+    {
+      "name": "BLACKLISTED_SEED",
+      "type": "bytes",
+      "value": "[98, 108, 97, 99, 107, 108, 105, 115, 116, 101, 100]"
+    },
+    {
+      "name": "DEVELOPER_COLLECTION_SEED",
+      "type": "bytes",
+      "value": "[100, 101, 118, 95, 99, 111, 108, 108, 101, 99, 116, 105, 111, 110]"
+    },
+    {
+      "name": "DEVELOPER_SEED",
+      "type": "bytes",
+      "value": "[100, 101, 118]"
+    },
+    {
+      "name": "DEVELOPER_TREASURY_SEED",
+      "type": "bytes",
+      "value": "[100, 101, 118, 95, 116, 114, 101, 97, 115, 117, 114, 121]"
+    },
+    {
+      "name": "GAME_DATA_SEED",
+      "type": "bytes",
+      "value": "[103, 97, 109, 101]"
+    },
+    {
+      "name": "GAME_KEY_ASSET_SEED",
+      "type": "bytes",
+      "value": "[103, 97, 109, 101, 95, 107, 101, 121]"
+    },
+    {
+      "name": "GAME_METADATA_SEED",
+      "type": "bytes",
+      "value": "[109, 101, 116, 97, 100, 97, 116, 97]"
+    },
+    {
+      "name": "GLOBAL_CONFIG_SEED",
+      "type": "bytes",
+      "value": "[99, 111, 110, 102, 105, 103]"
+    },
+    {
+      "name": "GLOBAL_TREASURY_SEED",
+      "type": "bytes",
+      "value": "[116, 114, 101, 97, 115, 117, 114, 121]"
+    }
+  ]
+}

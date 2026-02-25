@@ -1,0 +1,9 @@
+{
+  "name": "replayer-fe",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@codama/nodes-from-anchor": "^1.3.9",
+    "@codama/renderers-rust": "^2.0.0"
+  }
+}

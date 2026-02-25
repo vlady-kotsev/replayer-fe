@@ -1,0 +1,15 @@
+{
+    "idl": "idl/replayer.json",
+    "before": [],
+    "scripts": {
+        "rust": {
+            "from": "@codama/renderers-rust",
+            "args": [
+                ".",
+                {
+                    "formatCode": true
+                }
+            ]
+        }
+    }
+}

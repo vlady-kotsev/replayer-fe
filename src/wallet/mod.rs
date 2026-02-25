@@ -1,3 +1,11 @@
-mod solana;
+mod bindings;
+mod connection;
+mod send_transaction;
 #[cfg(feature = "hydrate")]
-pub use solana::*;
+mod utils;
+
+pub use bindings::*;
+pub use connection::*;
+pub use send_transaction::*;
+#[cfg(feature = "hydrate")]
+pub use utils::*;

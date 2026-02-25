@@ -1,33 +1,38 @@
+use std::sync::Arc;
+
 #[cfg(feature = "ssr")]
-use replayer_fe::error::server_error::{ServerError, ServerResult};
+use replayer_fe::error::{AppError, AppResult};
 
 #[cfg(feature = "ssr")]
 #[tokio::main]
-async fn main() -> ServerResult<()> {
+async fn main() -> AppResult<()> {
     use axum::Router;
     use leptos::logging::log;
     use leptos::prelude::*;
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use replayer_fe::app::*;
     use replayer_fe::config::{load_config, DEFAULT_CONFIG_FILE};
+    use solana_client::nonblocking::rpc_client::RpcClient;
 
-    let config = load_config().await?;
+    let app_config = load_config().await?;
 
-    let conf = get_configuration(Some(DEFAULT_CONFIG_FILE))
-        .map_err(|e| ServerError::internal(e.to_string()))?;
+    let leptos_config = get_configuration(Some(DEFAULT_CONFIG_FILE))
+        .map_err(|e| AppError::custom(e.to_string()))?;
 
-    let addr = conf.leptos_options.site_addr;
-    let leptos_options = conf.leptos_options;
+    let addr = leptos_config.leptos_options.site_addr;
+    let leptos_options = leptos_config.leptos_options;
     let routes = generate_route_list(App);
+    let solana_client = Arc::new(RpcClient::new(app_config.solana.rpc_url.clone()));
 
     let app = Router::new()
         .leptos_routes_with_context(
             &leptos_options,
             routes,
             {
-                let config = config.clone();
+                let config = app_config.clone();
                 move || {
                     provide_context(config.clone());
+                    provide_context(solana_client.clone());
                 }
             },
             {
@@ -41,10 +46,10 @@ async fn main() -> ServerResult<()> {
     log!("listening on http://{}", &addr);
     let listener = tokio::net::TcpListener::bind(&addr)
         .await
-        .map_err(|e| ServerError::internal(e.to_string()))?;
+        .map_err(|e| AppError::custom(e.to_string()))?;
     axum::serve(listener, app.into_make_service())
         .await
-        .map_err(|e| ServerError::internal(e.to_string()))?;
+        .map_err(|e| AppError::custom(e.to_string()))?;
     Ok(())
 }
 

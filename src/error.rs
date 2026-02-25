@@ -1,68 +1,25 @@
-use leptos::prelude::*;
+use leptos::{prelude::*, server_fn::codec::JsonEncoding};
+use serde::{Deserialize, Serialize};
 
-#[cfg(feature = "ssr")]
-pub mod server_error {
-    use axum::http::StatusCode;
-
-    #[derive(Debug, Clone)]
-    pub struct ServerError {
-        pub status: StatusCode,
-        pub message: String,
-    }
-
-    impl ServerError {
-        pub fn internal(msg: impl Into<String>) -> Self {
-            ServerError {
-                message: msg.into(),
-                status: StatusCode::INTERNAL_SERVER_ERROR,
-            }
-        }
-
-        pub fn bad_request(msg: impl Into<String>) -> Self {
-            ServerError {
-                status: StatusCode::BAD_REQUEST,
-                message: msg.into(),
-            }
-        }
-
-        pub fn forbidden(msg: impl Into<String>) -> Self {
-            ServerError {
-                status: StatusCode::FORBIDDEN,
-                message: msg.into(),
-            }
-        }
-
-        pub fn not_found(msg: impl Into<String>) -> Self {
-            ServerError {
-                status: StatusCode::NOT_FOUND,
-                message: msg.into(),
-            }
-        }
-    }
-
-    impl std::fmt::Display for ServerError {
-        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-            write!(f, "{}", self.message)
-        }
-    }
-
-    impl std::error::Error for ServerError {}
-
-    impl From<String> for ServerError {
-        fn from(message: String) -> Self {
-            Self {
-                message,
-                status: StatusCode::INTERNAL_SERVER_ERROR,
-            }
-        }
-    }
-
-    pub type ServerResult<T> = Result<T, ServerError>;
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct AppError {
+    message: String,
 }
 
-#[derive(Debug, Clone)]
-pub struct AppError {
-    pub message: String,
+impl FromServerFnError for AppError {
+    type Encoder = JsonEncoding;
+
+    fn from_server_fn_error(value: ServerFnErrorErr) -> Self {
+        AppError::custom(value.to_string())
+    }
+}
+
+impl AppError {
+    pub fn custom(message: impl Into<String>) -> AppError {
+        Self {
+            message: message.into(),
+        }
+    }
 }
 
 impl std::fmt::Display for AppError {

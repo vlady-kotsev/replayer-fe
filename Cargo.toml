@@ -16,13 +16,32 @@ leptos_meta = { version = "0.8.0" }
 tokio = { version = "1", features = ["rt-multi-thread"], optional = true }
 wasm-bindgen = { version = "=0.2.100", optional = true }
 js-sys = { version = "=0.3.77", optional = true }
-web-sys = { version = "=0.3.77", optional = true }
+web-sys = { version = "=0.3.77", features = [
+    "Headers",
+    "Request",
+    "RequestInit",
+    "Response",
+    "Window",
+], optional = true }
 wasm-bindgen-futures = "=0.4.50"
-anchor-client = { version = "0.32.1", features = ["async"], optional = true }
-solana-address = { version = "2.2", optional = true }
-serde = { version = "1.0.228", features = ["derive"], optional = true }
+serde = { version = "1.0.228", features = ["derive"] }
 toml = "0.9.8"
-bs58 = "0.5"
+solana-keypair = { version = "3.1.2", optional = true }
+borsh = { version = "1.6.0", features = ["derive"], optional = true }
+solana-instruction = { version = "3.2.0", features = ["serde"] }
+solana-pubkey = { version = "4.1.0", features = ["borsh", "curve25519"] }
+solana-account-info = { version = "3.1.0", optional = true }
+solana-program-error = { version = "3.0.0", optional = true }
+solana-cpi = { version = "3.1.0", optional = true }
+num-derive = { version = "0.4.2", optional = true }
+thiserror = { version = "2.0.18", optional = true }
+num-traits = { version = "0.2.19", optional = true }
+solana-transaction = { version = "4.0.0", features = ["serde"] }
+bincode = "1"
+bs58 = "0.5.1"
+solana-hash = "4.2.0"
+solana-client = { version = "3.1.9", optional = true }
+serde-wasm-bindgen = "0.6.5"
 
 [features]
 hydrate = [
@@ -36,14 +55,23 @@ ssr = [
     "dep:axum",
     "dep:tokio",
     "dep:leptos_axum",
-    "dep:anchor-client",
-    "dep:serde",
-    "dep:solana-address",
     "leptos/ssr",
     "leptos_meta/ssr",
     "leptos_router/ssr",
+    "dep:solana-keypair",
+    "dep:borsh",
+    "dep:solana-account-info",
+    "dep:solana-program-error",
+    "dep:solana-cpi",
+    "dep:num-derive",
+    "dep:thiserror",
+    "dep:num-traits",
+    "dep:solana-client",
 ]
-
+serde = []
+fetch = []
+anchor = []
+anchor-idl-build = []
 # Defines a size-optimized profile for the WASM bundle in release mode
 [profile.wasm-release]
 inherits = "release"
