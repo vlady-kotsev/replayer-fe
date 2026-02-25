@@ -7,9 +7,9 @@
   right: 0;
   z-index: 1000;
   height: $nav-height;
-  background-color: rgba($bg-secondary, 0.95);
+  background-color: black;
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid $border-subtle;
+  border-bottom: 2px solid $accent-purple;
   display: flex;
   align-items: center;
   padding: 0 2rem;
@@ -19,8 +19,8 @@
   display: flex;
   align-items: center;
   margin-right: 2.5rem;
-  margin-top: 0.8rem;
-  height: 10rem;
+  // margin-top: 0.8rem;
+  height: 4rem;
   width: auto;
 }
 
@@ -45,7 +45,7 @@
 
   // Leptos router adds .active to the current route link
   li a.active {
-    color: $accent-blue;
+    color: $accent-purple;
   }
 }
 
@@ -64,7 +64,7 @@
 
 .nav-cta {
   padding: 0.5rem 1.25rem;
-  background: linear-gradient(135deg, $accent-purple, $accent-blue);
+  background: $accent-purple;
   color: $text-bright;
   border: none;
   border-radius: 6px;

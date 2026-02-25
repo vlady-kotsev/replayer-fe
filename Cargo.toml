@@ -42,16 +42,19 @@ bs58 = "0.5.1"
 solana-hash = "4.2.0"
 solana-client = { version = "3.1.9", optional = true }
 serde-wasm-bindgen = "0.6.5"
+thaw = { version = "0.5.0-beta" } # This hits recursion limit, in order to fix add #![recursion_limit = "256"] in thaw/src/lib.rs
 
 [features]
 hydrate = [
     "leptos/hydrate",
+    "thaw/hydrate",
     "dep:console_error_panic_hook",
     "dep:wasm-bindgen",
     "dep:js-sys",
     "dep:web-sys",
 ]
 ssr = [
+    "thaw/ssr",
     "dep:axum",
     "dep:tokio",
     "dep:leptos_axum",

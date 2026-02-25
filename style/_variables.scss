@@ -3,23 +3,21 @@
 // ============================================
 
 // --- Core backgrounds ---
-$bg-primary:    #0a0a0f;
-$bg-secondary:  #12121a;
-$bg-surface:    #1a1a2e;
+$bg-primary:    #262626;
+$bg-secondary:  #1e1e1e;
+$bg-surface:    #333333;
 
 // --- Accent colors ---
-$accent-blue:   #00d4ff;
-$accent-purple: #7b2ff7;
-$accent-pink:   #ff2d75;
+$accent-purple: #9b09bc;
 
 // --- Text ---
 $text-primary:   #e0e0e0;
-$text-secondary: #8888a0;
+$text-secondary: #69636b;
 $text-bright:    #ffffff;
 
 // --- Functional ---
 $nav-height: 96px;
-$border-subtle: #2a2a3e;
+$border-subtle: #3a3a3a;
 $transition-fast: 0.2s ease;
 
 // --- CSS Custom Properties (runtime theming) ---
@@ -27,9 +25,7 @@ $transition-fast: 0.2s ease;
   --bg-primary:    #{$bg-primary};
   --bg-secondary:  #{$bg-secondary};
   --bg-surface:    #{$bg-surface};
-  --accent-blue:   #{$accent-blue};
   --accent-purple: #{$accent-purple};
-  --accent-pink:   #{$accent-pink};
   --text-primary:  #{$text-primary};
   --text-secondary: #{$text-secondary};
   --text-bright:   #{$text-bright};

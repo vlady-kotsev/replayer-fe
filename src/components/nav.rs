@@ -1,14 +1,14 @@
 use leptos::prelude::*;
 use leptos_router::components::*;
 
-use crate::{components::WalletButton, error::ErrorView};
+use crate::components::WalletButton;
 
 #[component]
 pub fn Nav() -> impl IntoView {
     view! {
         <nav class="site-nav">
             <A href="/" attr:class="nav-logo">
-                <img src="/replayer.png" alt="Logo" class="nav-logo" />
+                <img src="/logo.webp" alt="Logo" class="nav-logo" />
             </A>
             <ul class="nav-links">
                 <li>
@@ -25,9 +25,7 @@ pub fn Nav() -> impl IntoView {
                 </li>
             </ul>
             <div class="nav-spacer"></div>
-            <ErrorBoundary fallback=|errors| view! { <ErrorView errors=errors /> }>
                 <WalletButton />
-            </ErrorBoundary>
         </nav>
     }
 }

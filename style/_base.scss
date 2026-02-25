@@ -34,12 +34,12 @@ body {
 }
 
 a {
-  color: $accent-blue;
+  color: $accent-purple;
   text-decoration: none;
   transition: color $transition-fast;
 
   &:hover {
-    color: lighten($accent-blue, 15%);
+    color: lighten($accent-purple, 15%);
   }
 }
 
@@ -64,7 +64,7 @@ h1 {
 .btn-primary {
   display: inline-block;
   padding: 0.6rem 1.5rem;
-  background: linear-gradient(135deg, $accent-purple, $accent-blue);
+  background: $accent-purple;
   color: $text-bright;
   border: none;
   border-radius: 6px;
@@ -79,6 +79,14 @@ h1 {
     transform: translateY(-1px);
     color: $text-bright;
   }
+}
+
+.thaw-config-provider {
+  display: flex;
+  flex-direction: column;
+
+  height: 100vh;
+  background-color: transparent !important;
 }
 
 input, select, textarea {

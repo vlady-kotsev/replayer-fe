@@ -1,8 +1,9 @@
 use crate::error::AppError;
 use leptos::prelude::*;
+use thaw::{Button, ButtonAppearance};
 
 #[component]
-pub fn WalletButton() -> Result<impl IntoView, AppError> {
+pub fn WalletButton() -> impl IntoView {
     #[allow(unused_variables)]
     let (key, set_key) = signal::<Option<String>>(None);
     let connect_action = Action::new_unsync(move |_| async move {
@@ -33,39 +34,45 @@ pub fn WalletButton() -> Result<impl IntoView, AppError> {
         }
     });
 
-    Ok(view! {
+    let pending = Signal::derive(move || {
+        connect_action.pending().get() || disconnect_action.pending().get()
+    });
+
+    view! {
         <div class="wallet">
             {move || {
-                let pending = connect_action.pending().get() || disconnect_action.pending().get();
-                if pending {
-
-                    view! { <span class="btn-primary">"Connecting..."</span> }
+                if pending.get() {
+                    view! {
+                        <Button appearance=ButtonAppearance::Primary loading=true>
+                            "Connecting..."
+                        </Button>
+                    }
                         .into_any()
                 } else if let Some(k) = key.read().as_ref() {
                     let short = format!("{}...{}", &k[..4], &k[k.len() - 4..]);
                     view! {
                         <div class="wallet__info">
-                            <button
-                                class="btn-primary"
-                                on:click=move |_| { _ = disconnect_action.dispatch(()) }
+                            <Button
+                                appearance=ButtonAppearance::Primary
+                                on_click=move |_| { _ = disconnect_action.dispatch(()) }
                             >
                                 {short}
-                            </button>
+                            </Button>
                         </div>
                     }
                         .into_any()
                 } else {
                     view! {
-                        <button
-                            class="btn-primary"
-                            on:click=move |_| { _ = connect_action.dispatch(()) }
+                        <Button
+                            appearance=ButtonAppearance::Primary
+                            on_click=move |_| { _ = connect_action.dispatch(()) }
                         >
                             "Connect Phantom"
-                        </button>
+                        </Button>
                     }
                         .into_any()
                 }
             }}
         </div>
-    })
+    }
 }

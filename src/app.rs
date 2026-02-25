@@ -4,11 +4,13 @@ use leptos_router::{
     components::{Outlet, ParentRoute, Route, Router, Routes},
     path, StaticSegment,
 };
+use thaw::{ssr::SSRMountStyleProvider, ConfigProvider, Theme};
 
 use crate::components::{Footer, Nav};
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
     view! {
+        <SSRMountStyleProvider>
         <!DOCTYPE html>
         <html lang="en">
             <head>
@@ -20,7 +22,7 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
                     href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&display=swap"
                     rel="stylesheet"
                 />
-                <link rel="icon" type="image/png" href="/replayer.png" />
+                <link rel="icon" type="image/png" href="/logo.webp" />
                 <AutoReload options=options.clone() />
                 <HydrationScripts options />
                 <MetaTags />
@@ -29,6 +31,7 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
                 <App />
             </body>
         </html>
+        </SSRMountStyleProvider>
     }
 }
 
@@ -46,8 +49,8 @@ pub fn App() -> impl IntoView {
         // sets the document title
         <Title text="Replayer" />
 
-        // content for this welcome page
         <Router>
+         <ConfigProvider theme=RwSignal::new(Theme::dark())>
             <Nav />
             <main class="main-content">
                 <Routes fallback=|| "Page not found.".into_view()>
@@ -68,6 +71,7 @@ pub fn App() -> impl IntoView {
                 </Routes>
             </main>
             <Footer />
+            </ ConfigProvider>
         </Router>
     }
 }
