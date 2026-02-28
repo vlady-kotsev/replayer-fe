@@ -1,17 +1,20 @@
-use crate::error::AppError;
+use crate::{app::WalletPublicKeyContext, error::AppError};
 use leptos::prelude::*;
 use thaw::{Button, ButtonAppearance};
 
 #[component]
 pub fn WalletButton() -> impl IntoView {
-    #[allow(unused_variables)]
-    let (key, set_key) = signal::<Option<String>>(None);
+    let WalletPublicKeyContext {
+        public_key,
+        set_public_key,
+    } = use_context::<WalletPublicKeyContext>().expect("Can't get wallet context");
+
     let connect_action = Action::new_unsync(move |_| async move {
         #[cfg(feature = "hydrate")]
         {
             crate::wallet::connect_phantom()
                 .await
-                .and_then(|key| Ok(set_key.set(Some(key))))
+                .and_then(|key| Ok(set_public_key.set(Some(key))))
                 .map_err(AppError::from)
         }
         #[cfg(not(feature = "hydrate"))]
@@ -25,7 +28,7 @@ pub fn WalletButton() -> impl IntoView {
         {
             crate::wallet::disconnect_phantom()
                 .await
-                .and_then(|_| Ok(set_key.set(None)))
+                .and_then(|_| Ok(set_public_key.set(None)))
                 .map_err(AppError::from)
         }
         #[cfg(not(feature = "hydrate"))]
@@ -34,9 +37,8 @@ pub fn WalletButton() -> impl IntoView {
         }
     });
 
-    let pending = Signal::derive(move || {
-        connect_action.pending().get() || disconnect_action.pending().get()
-    });
+    let pending =
+        Signal::derive(move || connect_action.pending().get() || disconnect_action.pending().get());
 
     view! {
         <div class="wallet">
@@ -48,7 +50,7 @@ pub fn WalletButton() -> impl IntoView {
                         </Button>
                     }
                         .into_any()
-                } else if let Some(k) = key.read().as_ref() {
+                } else if let Some(k) = public_key.read().as_ref() {
                     let short = format!("{}...{}", &k[..4], &k[k.len() - 4..]);
                     view! {
                         <div class="wallet__info">

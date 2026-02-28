@@ -1,10 +1,22 @@
 use leptos::prelude::*;
 use leptos_router::components::*;
 
-use crate::components::WalletButton;
+use crate::{app::WalletPublicKeyContext, components::WalletButton, server::is_admin};
 
 #[component]
 pub fn Nav() -> impl IntoView {
+    let wallet_ctx = use_context::<WalletPublicKeyContext>().expect("Can't get wallet context");
+
+    let check_admin = Resource::new(
+        || false,
+        move |_| async move {
+            match wallet_ctx.public_key.get() {
+                Some(key) => is_admin(key).await.unwrap_or(false),
+                None => false,
+            }
+        },
+    );
+
     view! {
         <nav class="site-nav">
             <A href="/" attr:class="nav-logo">
@@ -23,9 +35,16 @@ pub fn Nav() -> impl IntoView {
                 <li>
                     <A href="/publish">"Publish Games"</A>
                 </li>
+                <Transition>
+                    <Show when=move || check_admin.get().unwrap_or(false)>
+                        <li>
+                            <A href="/admin">"Admin"</A>
+                        </li>
+                    </Show>
+                </Transition>
             </ul>
             <div class="nav-spacer"></div>
-                <WalletButton />
+            <WalletButton />
         </nav>
     }
 }

@@ -4,7 +4,7 @@ mod components;
 pub mod config;
 mod constants;
 pub mod error;
-#[cfg(feature = "ssr")]
+// #[cfg(feature = "ssr")]
 mod generated;
 mod models;
 mod pages;
@@ -12,7 +12,7 @@ mod server;
 mod utils;
 mod wallet;
 
-#[cfg(feature = "ssr")]
+// #[cfg(feature = "ssr")]
 pub use generated::*;
 
 #[cfg(feature = "hydrate")]

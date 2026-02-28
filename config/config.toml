@@ -2,7 +2,7 @@
 backend_url = "some"
 
 [solana]
-rpc_url = "https://api.devnet.solana.com"
+rpc_url = "http://127.0.0.1:8899"
 program_id = "3L4ZDN7REkTk97ybn5FS4NUBMmcbQQQjQbKH6kET595c"
 
 [package.metadata.leptos]

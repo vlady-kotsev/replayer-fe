@@ -64,3 +64,11 @@ impl From<String> for AppError {
 }
 
 pub type AppResult<T> = Result<T, AppError>;
+
+impl From<std::io::Error> for AppError {
+    fn from(value: std::io::Error) -> Self {
+        AppError {
+            message: value.to_string(),
+        }
+    }
+}
