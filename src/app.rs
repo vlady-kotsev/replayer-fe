@@ -4,11 +4,11 @@ use leptos::{
 };
 use leptos_meta::{provide_meta_context, MetaTags, Stylesheet, Title};
 use leptos_router::{
-    components::{Route, Router, Routes},
+    components::{ParentRoute, Route, Router, Routes},
     StaticSegment,
 };
 use leptos_use::storage::{use_local_storage_with_options, UseStorageOptions};
-use thaw::{ssr::SSRMountStyleProvider, ConfigProvider, Theme};
+use thaw::{ConfigProvider, Theme};
 
 use crate::{
     components::{AdminRoute, Footer, Nav},
@@ -18,7 +18,6 @@ use crate::{
 
 pub fn shell(options: LeptosOptions) -> impl IntoView {
     view! {
-        <SSRMountStyleProvider>
             <!DOCTYPE html>
             <html lang="en">
                 <head>
@@ -39,7 +38,6 @@ pub fn shell(options: LeptosOptions) -> impl IntoView {
                     <App />
                 </body>
             </html>
-        </SSRMountStyleProvider>
     }
 }
 
@@ -72,7 +70,9 @@ pub fn App() -> impl IntoView {
                     <Routes fallback=|| "Page not found.".into_view()>
                         <Route path=StaticSegment("") view=HomePage />
                         <Route path=StaticSegment("/publish") view=PublishGamePage />
-                        <Route path=StaticSegment("/admin") view=AdminRoute />
+                        <ParentRoute path=StaticSegment("/admin") view=AdminRoute>
+                            <Route path=StaticSegment("") view=AdminDashboard />
+                        </ParentRoute>
                     </Routes>
                 </main>
                 <Footer />
@@ -85,6 +85,11 @@ pub fn App() -> impl IntoView {
 pub struct WalletPublicKeyContext {
     pub public_key: Signal<Option<String>>,
     pub set_public_key: WriteSignal<Option<String>>,
+}
+
+#[component]
+fn AdminDashboard() -> impl IntoView {
+    view! { <h1>"Admin"</h1> }
 }
 
 /// Renders the home page of your application.

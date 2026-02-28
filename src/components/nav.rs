@@ -8,9 +8,9 @@ pub fn Nav() -> impl IntoView {
     let wallet_ctx = use_context::<WalletPublicKeyContext>().expect("Can't get wallet context");
 
     let check_admin = Resource::new(
-        || false,
-        move |_| async move {
-            match wallet_ctx.public_key.get() {
+        move || wallet_ctx.public_key.get(),
+        move |key| async move {
+            match key {
                 Some(key) => is_admin(key).await.unwrap_or(false),
                 None => false,
             }

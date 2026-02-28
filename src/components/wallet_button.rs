@@ -1,6 +1,6 @@
 use crate::{app::WalletPublicKeyContext, error::AppError};
 use leptos::prelude::*;
-use thaw::{Button, ButtonAppearance};
+use thaw::{Button, ButtonAppearance, Spinner, SpinnerSize};
 
 #[component]
 pub fn WalletButton() -> impl IntoView {
@@ -46,7 +46,7 @@ pub fn WalletButton() -> impl IntoView {
                 if pending.get() {
                     view! {
                         <Button appearance=ButtonAppearance::Primary loading=true>
-                            "Connecting..."
+                            <Spinner size=SpinnerSize::ExtraLarge/>
                         </Button>
                     }
                         .into_any()

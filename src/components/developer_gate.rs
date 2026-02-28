@@ -1,5 +1,5 @@
 use leptos::prelude::*;
-use thaw::{Button, ButtonAppearance, Input};
+use thaw::{Button, ButtonAppearance, Input, Spinner, SpinnerSize};
 
 use crate::{
     app::WalletPublicKeyContext,
@@ -16,7 +16,6 @@ pub fn DeveloperGate(children: ChildrenFn) -> impl IntoView {
     let collection_uri = RwSignal::new(String::new());
     let created = RwSignal::new(false);
 
-    // Re-runs when public_key changes (wallet connect/disconnect)
     let dev_check = LocalResource::new(move || {
         let key = public_key.get();
         async move {
@@ -70,7 +69,7 @@ pub fn DeveloperGate(children: ChildrenFn) -> impl IntoView {
                 <p>"Connect your wallet to continue"</p>
             </Show>
             <Show when=is_loading>
-                <p>"Checking developer status..."</p>
+               <Spinner size=SpinnerSize::ExtraLarge/>
             </Show>
             <Show when=is_developer>{children()}</Show>
             <Show when=needs_registration>

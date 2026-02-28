@@ -17,10 +17,6 @@ pub async fn is_admin(admin: String) -> AppResult<bool> {
     let admin_pubkey = Pubkey::from_str_const(&admin);
     let (admin_account_pda, _) =
         Pubkey::find_program_address(&[ADMIN_SEED, admin_pubkey.as_ref()], &crate::REPLAYER_ID);
-    let res = match fetch_admin(&solana_client, &admin_account_pda){
-        Ok(res) => res,
-        Err(e) =>return Err(AppError::custom("Can't get context"))
-    };
-    leptos::logging::log!("{:?}", res);
-    Ok(false)
+
+    Ok(fetch_admin(&solana_client, &admin_account_pda).is_ok())
 }

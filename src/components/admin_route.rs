@@ -1,5 +1,6 @@
 use leptos::prelude::*;
 use leptos_router::components::{Outlet, Redirect};
+use thaw::{Spinner, SpinnerSize};
 
 use crate::{app::WalletPublicKeyContext, server::is_admin};
 
@@ -8,11 +9,11 @@ pub fn AdminRoute() -> impl IntoView {
     let wallet_ctx = use_context::<WalletPublicKeyContext>().expect("Can't get wallet context");
 
     let is_admin = Resource::new(
-        || false,
-        move |_| async move {
-            match wallet_ctx.public_key.get() {
-                Some(key) => is_admin(key).await.unwrap_or(false),
-                None => false,
+        move || wallet_ctx.public_key.get(),
+        move |key| async move {
+            match key {
+                Some(key) => Some(is_admin(key).await.unwrap_or(false)),
+                None => None,
             }
         },
     );
@@ -21,13 +22,16 @@ pub fn AdminRoute() -> impl IntoView {
 
     view! {
         <Suspense fallback=|| {
-            view! { <p>"Checking auth..."</p> }
+            view! { <Spinner size=SpinnerSize::ExtraLarge/> }
         }>
             {move || {
-                match is_admin.get() {
-                    Some(true) => view! { <Outlet /> }.into_any(),
-                    _ => view! { <Redirect path="/login" /> }.into_any(),
-                }
+                is_admin.get().map(|result| {
+                    match result {
+                        Some(true) => view! { <Outlet /> }.into_any(),
+                        Some(false) => view! { <Redirect path="/" /> }.into_any(),
+                        None => view! { <Spinner size=SpinnerSize::ExtraLarge/> }.into_any(),
+                    }
+                })
             }}
         </Suspense>
     }
