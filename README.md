@@ -1,5 +1,6 @@
 # Replayer
-
+<img width="200px" src="https://github.com/user-attachments/assets/aee18132-9a95-43ef-9ac6-2103816e4d01" />
+<hr/>
 A decentralized retro game marketplace and emulation platform built on Solana. Developers publish encrypted CHIP-8 games on-chain, players purchase them as NFTs, and play directly in the browser.
 
 ## How It Works
