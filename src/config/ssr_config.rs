@@ -2,7 +2,7 @@
 pub mod config {
     use crate::{
         error::{AppError, AppResult},
-        utils::deserialize_address,
+        utils::{deserialize_address, deserialize_keypair},
     };
     use serde::Deserialize;
     use solana_pubkey::Pubkey;
@@ -20,6 +20,9 @@ pub mod config {
         pub rpc_url: String,
         #[serde(deserialize_with = "deserialize_address")]
         pub program_id: Pubkey,
+        #[serde(deserialize_with = "deserialize_keypair")]
+        pub bundlr_keypair: [u8; 64],
+        pub bundlr_url: String,
     }
 
     #[derive(Clone, Deserialize)]

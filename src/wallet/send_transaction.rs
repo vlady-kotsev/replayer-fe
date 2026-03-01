@@ -6,7 +6,7 @@ use solana_transaction::Transaction;
 pub async fn send_transaction(transaction: Transaction) -> AppResult<String> {
     use crate::wallet::{
         is_phantom_installed, phantom_request, PhantomParams, PhantomRequest,
-        PhantomSendTransactionResponse,
+        PhantomSignatureResponse,
     };
 
     if !is_phantom_installed() {
@@ -28,7 +28,7 @@ pub async fn send_transaction(transaction: Transaction) -> AppResult<String> {
         .await
         .map_err(|e| AppError::custom(format!("{:?}", e)))?;
 
-    let resp: PhantomSendTransactionResponse =
+    let resp: PhantomSignatureResponse =
         serde_wasm_bindgen::from_value(result).map_err(|e| AppError::custom(e.to_string()))?;
 
     Ok(resp.signature)

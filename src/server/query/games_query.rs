@@ -6,7 +6,7 @@ use crate::{
 use leptos::prelude::*;
 use serde::{Deserialize, Serialize};
 use solana_pubkey::Pubkey;
-use std::{str::FromStr, sync::Arc};
+use std::sync::Arc;
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct FetchedGameMetadata {

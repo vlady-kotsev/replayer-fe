@@ -1,5 +1,8 @@
-use leptos::prelude::*;
-use thaw::{Button, Card, CardFooter, CardHeader, CardHeaderDescription, Spinner, SpinnerSize};
+use leptos::{logging, prelude::*};
+use thaw::{
+    Button, Card, CardFooter, CardHeader, CardHeaderDescription, Image, ImageShape, Spinner,
+    SpinnerSize,
+};
 
 use crate::{
     app::WalletPublicKeyContext,
@@ -63,6 +66,7 @@ pub fn GameCard(game: FetchedGameMetadata, refetch_trigger: RwSignal<usize>) -> 
                 <CardHeaderDescription slot>{price_text}</CardHeaderDescription>
             </CardHeader>
             <p class="game-supply">"Supply: " {supply_text}</p>
+             <Image src={game.data.game_uri} width="200px" height="200px" shape=ImageShape::Rounded/>
             <Show when=move || public_key.get().is_some()>
                 <CardFooter>
                     <Suspense fallback=|| {

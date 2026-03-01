@@ -1,6 +1,7 @@
 use crate::error::{AppError, AppResult};
 use crate::server::{
     build_allocate_game_account_tx, build_finalize_game_upload_tx, build_upload_game_chunk_tx,
+    upload_game_metadata,
 };
 use leptos::{prelude::*, task::spawn_local};
 use thaw::{Button, ButtonAppearance, FileList, Input, Upload, UploadDragger};
@@ -11,11 +12,13 @@ const CHUNK_SIZE: usize = 900;
 #[component]
 pub fn GameUpload() -> impl IntoView {
     let game_name = RwSignal::new(String::new());
-    let game_uri = RwSignal::new(String::new());
     let game_price = RwSignal::new(String::new());
     let max_supply = RwSignal::new(String::new());
     let file_bytes: StoredValue<Option<Vec<u8>>> = StoredValue::new(None);
     let file_loaded = RwSignal::new(false);
+    let image_bytes: StoredValue<Option<Vec<u8>>> = StoredValue::new(None);
+    let image_content_type: StoredValue<Option<String>> = StoredValue::new(None);
+    let image_loaded = RwSignal::new(false);
     let status = RwSignal::new(String::new());
     let uploading = RwSignal::new(false);
 
@@ -25,9 +28,28 @@ pub fn GameUpload() -> impl IntoView {
             spawn_local(async move {
                 let array_buffer = JsFuture::from(file.array_buffer()).await.unwrap();
                 let bytes = Uint8Array::new(&array_buffer).to_vec();
-                status.set(format!("File loaded: {} bytes", bytes.len()));
+                status.set(format!("Game file loaded: {} bytes", bytes.len()));
                 file_bytes.set_value(Some(bytes));
                 file_loaded.set(true);
+            });
+        }
+    };
+
+    let handle_image = move |file_list: FileList| {
+        if let Some(file) = file_list.get(0) {
+            let file = file.to_owned();
+            spawn_local(async move {
+                let content_type = file.type_();
+                let array_buffer = JsFuture::from(file.array_buffer()).await.unwrap();
+                let bytes = Uint8Array::new(&array_buffer).to_vec();
+                status.set(format!("Image loaded: {} bytes", bytes.len()));
+                image_bytes.set_value(Some(bytes));
+                image_content_type.set_value(Some(if content_type.is_empty() {
+                    "image/png".to_string()
+                } else {
+                    content_type
+                }));
+                image_loaded.set(true);
             });
         }
     };
@@ -39,10 +61,11 @@ pub fn GameUpload() -> impl IntoView {
         spawn_local(async move {
             let result = upload_game_flow(
                 game_name.get_untracked(),
-                game_uri.get_untracked(),
                 game_price.get_untracked(),
                 max_supply.get_untracked(),
                 file_bytes,
+                image_bytes,
+                image_content_type,
                 status,
             )
             .await;
@@ -51,11 +74,13 @@ pub fn GameUpload() -> impl IntoView {
                 Ok(_) => {
                     status.set("Game published successfully!".into());
                     game_name.set(String::new());
-                    game_uri.set(String::new());
                     game_price.set(String::new());
                     max_supply.set(String::new());
                     file_bytes.set_value(None);
                     file_loaded.set(false);
+                    image_bytes.set_value(None);
+                    image_content_type.set_value(None);
+                    image_loaded.set(false);
                 }
                 Err(e) => status.set(format!("Error: {e}")),
             }
@@ -67,13 +92,25 @@ pub fn GameUpload() -> impl IntoView {
         <div class="game-upload">
             <h2>"Publish Game"</h2>
             <Input value=game_name placeholder="Game Name" />
-            <Input value=game_uri placeholder="Game URI" />
             <Input value=game_price placeholder="Price (lamports)" />
             <Input value=max_supply placeholder="Max Supply" />
 
             {move || {
+                if image_loaded.get() {
+                    view! { <p class="file-status">"Image ready for upload"</p> }.into_any()
+                } else {
+                    view! {
+                        <Upload custom_request=handle_image>
+                            <UploadDragger>"Click or drag a game cover image"</UploadDragger>
+                        </Upload>
+                    }
+                        .into_any()
+                }
+            }}
+
+            {move || {
                 if file_loaded.get() {
-                    view! { <p class="file-status">"File ready for upload"</p> }.into_any()
+                    view! { <p class="file-status">"Game file ready for upload"</p> }.into_any()
                 } else {
                     view! {
                         <Upload custom_request=handle_file>
@@ -90,7 +127,9 @@ pub fn GameUpload() -> impl IntoView {
                 appearance=ButtonAppearance::Primary
                 on_click=on_submit
                 loading=uploading
-                disabled=Signal::derive(move || !file_loaded.get() || uploading.get())
+                disabled=Signal::derive(move || {
+                    !file_loaded.get() || !image_loaded.get() || uploading.get()
+                })
             >
                 "Publish Game"
             </Button>
@@ -118,17 +157,18 @@ async fn sha256(data: &[u8]) -> AppResult<Vec<u8>> {
 #[cfg(feature = "hydrate")]
 async fn upload_game_flow(
     game_name: String,
-    game_uri: String,
     game_price: String,
     max_supply: String,
     file_bytes: StoredValue<Option<Vec<u8>>>,
+    image_bytes: StoredValue<Option<Vec<u8>>>,
+    image_content_type: StoredValue<Option<String>>,
     status: RwSignal<String>,
 ) -> AppResult<()> {
     use crate::wallet::{get_public_key, send_transaction};
 
     let bytes = file_bytes
         .get_value()
-        .ok_or(AppError::custom("No file selected"))?;
+        .ok_or(AppError::custom("No game file selected"))?;
 
     let price: u64 = game_price
         .parse()
@@ -138,6 +178,20 @@ async fn upload_game_flow(
         .map_err(|_| AppError::custom("Invalid max supply"))?;
 
     let developer = get_public_key().await;
+
+    // 0. Upload image and create metadata URI
+    status.set("Uploading game image...".into());
+    let img_bytes = image_bytes
+        .get_value()
+        .ok_or(AppError::custom("No image selected"))?;
+    let content_type = image_content_type
+        .get_value()
+        .unwrap_or_else(|| "image/png".to_string());
+    let image_b58 = bs58::encode(&img_bytes).into_string();
+    let game_uri = upload_game_metadata(image_b58, content_type)
+        .await
+        .map_err(|e| AppError::custom(e.to_string()))?;
+
     let game_hash = sha256(&bytes).await?;
 
     // 1. Allocate game account

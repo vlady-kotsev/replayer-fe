@@ -15,4 +15,7 @@ extern "C" {
 
     #[wasm_bindgen(js_namespace = ["window", "solana"], js_name = request, catch)]
     pub async fn phantom_request(args: JsValue) -> Result<JsValue, JsValue>;
+
+    #[wasm_bindgen(js_namespace = ["window", "solana"], js_name = signMessage, catch)]
+    pub async fn phantom_sign_message(args: JsValue) -> Result<JsValue, JsValue>;
 }

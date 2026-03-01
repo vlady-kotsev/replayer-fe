@@ -48,6 +48,8 @@ thaw = { version = "0.5.0-beta" } #Library Bug: This hits recursion limit, in or
 solana-account = "3.1.0"
 serde_with = "3.17.0"
 leptos-use = { version = "0.17.0", features = ["storage"] }
+bundlr-sdk = { version = "0.5.0", optional = true }
+serde_json = "1"
 
 [features]
 hydrate = [
@@ -64,6 +66,7 @@ ssr = [
     "serde",
     "thaw/ssr",
     "dep:axum",
+    "dep:bundlr-sdk",
     "dep:tokio",
     "dep:leptos_axum",
     "leptos/ssr",

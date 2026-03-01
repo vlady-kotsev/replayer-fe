@@ -20,9 +20,11 @@ impl App {
         use crate::config::{load_config, DEFAULT_CONFIG_FILE};
         use axum::Router;
 
+        use bundlr_sdk::{currency::solana::SolanaBuilder, BundlrBuilder};
         use leptos::prelude::*;
         use leptos_axum::{generate_route_list, LeptosRoutes};
-        use solana_client::rpc_client::RpcClient;
+        use solana_client::{client_error::reqwest::Url, rpc_client::RpcClient};
+        use solana_keypair::Keypair;
 
         use std::sync::Arc;
 
@@ -36,6 +38,31 @@ impl App {
         let routes = generate_route_list(App);
         let solana_client = Arc::new(RpcClient::new(app_config.solana.rpc_url.clone()));
 
+        let bundlr_keypair = Keypair::new_from_array(
+            app_config.solana.bundlr_keypair[..32]
+                .try_into()
+                .map_err(|_| AppError::custom("Invalid keypair bytes"))?,
+        );
+
+        let solana_currency = SolanaBuilder::new()
+            .wallet(&bundlr_keypair.to_base58_string())
+            .build()
+            .map_err(|e| AppError::custom(format!("Bundlr currency error: {e}")))?;
+
+        let bundlr = Arc::new(
+            BundlrBuilder::new()
+                .url(
+                    Url::parse(&app_config.solana.bundlr_url)
+                        .map_err(|e| AppError::custom(format!("Invalid bundlr netwrok url:{e}")))?,
+                )
+                .currency(solana_currency)
+                .fetch_pub_info()
+                .await
+                .map_err(|e| AppError::custom(format!("Bundlr init error: {e}")))?
+                .build()
+                .map_err(|e| AppError::custom(format!("Bundlr build error: {e}")))?,
+        );
+
         let router = Router::new()
             .leptos_routes_with_context(
                 &leptos_options,
@@ -45,6 +72,7 @@ impl App {
                     move || {
                         provide_context(config.clone());
                         provide_context(solana_client.clone());
+                        provide_context(bundlr.clone());
                     }
                 },
                 {

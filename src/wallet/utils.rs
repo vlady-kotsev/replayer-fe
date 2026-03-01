@@ -14,7 +14,7 @@ pub struct PhantomRequest {
 }
 
 #[derive(Deserialize)]
-pub struct PhantomSendTransactionResponse {
+pub struct PhantomSignatureResponse {
     pub signature: String,
 }
 
