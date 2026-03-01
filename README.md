@@ -20,7 +20,18 @@ A decentralized retro game marketplace and emulation platform built on Solana. D
 - **UI Components**: Thaw
 - **Styling**: SCSS
 - **Client Generator**: Codama Rust
+## Screens
 
+<img width="1000"  alt="image" src="https://github.com/user-attachments/assets/3473855e-2ada-4b4c-a2ce-0b6710ffad39" />
+<hr/>
+<img width="1000"  alt="image" src="https://github.com/user-attachments/assets/878b3328-55ce-4e4b-8e07-2192c360df8b" />
+<hr/>
+<img width="2278" height="1161" alt="image" src="https://github.com/user-attachments/assets/f989d07b-d8c6-4913-af77-4d633b399ede" />
+<hr/>
+<img width="1000"  alt="image" src="https://github.com/user-attachments/assets/624a7aa5-2854-4fbc-a69d-d35c68f2e44e" />
+<hr/>
+<img width="2278" height="1161" alt="image" src="https://github.com/user-attachments/assets/2f3f7c52-6159-4235-9cfd-e2af48e6065b" />
+<hr/>
 ## Project Structure
 
 ```
@@ -44,6 +55,7 @@ src/
 - `wasm32-unknown-unknown` target: `rustup target add wasm32-unknown-unknown`
 - A running instance of the Replayer backend API (default: `http://127.0.0.1:3003`)
 - [Phantom wallet](https://phantom.app/) browser extension
+
 
 ## Configuration
 
