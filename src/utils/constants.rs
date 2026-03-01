@@ -15,3 +15,6 @@ pub const SIGN_AND_SEND_TRANSACTION_METHOD: &'static str = "signAndSendTransacti
 
 // Local Storage
 pub const LS_PUBLIC_KEY: &'static str = "PUBLIC_KEY";
+
+// Discriminators
+pub const GAME_METADATA_DISCRIMINATOR: &[u8] = &[4];

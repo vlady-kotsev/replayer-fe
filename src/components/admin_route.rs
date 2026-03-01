@@ -22,16 +22,18 @@ pub fn AdminRoute() -> impl IntoView {
 
     view! {
         <Suspense fallback=|| {
-            view! { <Spinner size=SpinnerSize::ExtraLarge/> }
+            view! { <Spinner size=SpinnerSize::ExtraLarge /> }
         }>
             {move || {
-                is_admin.get().map(|result| {
-                    match result {
-                        Some(true) => view! { <Outlet /> }.into_any(),
-                        Some(false) => view! { <Redirect path="/" /> }.into_any(),
-                        None => view! { <Spinner size=SpinnerSize::Huge/> }.into_any(),
-                    }
-                })
+                is_admin
+                    .get()
+                    .map(|result| {
+                        match result {
+                            Some(true) => view! { <Outlet /> }.into_any(),
+                            Some(false) => view! { <Redirect path="/" /> }.into_any(),
+                            None => view! { <Spinner size=SpinnerSize::Huge /> }.into_any(),
+                        }
+                    })
             }}
         </Suspense>
     }

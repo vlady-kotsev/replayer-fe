@@ -46,7 +46,7 @@ pub fn WalletButton() -> impl IntoView {
                 if pending.get() {
                     view! {
                         <Button appearance=ButtonAppearance::Primary loading=true>
-                            <Spinner size=SpinnerSize::ExtraLarge/>
+                            <Spinner size=SpinnerSize::ExtraLarge />
                         </Button>
                     }
                         .into_any()

@@ -67,7 +67,7 @@ pub fn DeveloperGate(children: ChildrenFn) -> impl IntoView {
                 <p>"Connect your wallet to continue"</p>
             </Show>
             <Show when=is_loading>
-               <Spinner size=SpinnerSize::ExtraLarge/>
+                <Spinner size=SpinnerSize::ExtraLarge />
             </Show>
             <Show when=is_developer>{children()}</Show>
             <Show when=needs_registration>
