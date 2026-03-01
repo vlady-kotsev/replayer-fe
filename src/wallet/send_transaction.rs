@@ -1,5 +1,5 @@
-use crate::utils::SIGN_AND_SEND_TRANSACTION_METHOD;
 use crate::error::{AppError, AppResult};
+use crate::utils::SIGN_AND_SEND_TRANSACTION_METHOD;
 use solana_transaction::Transaction;
 
 #[cfg(feature = "hydrate")]

@@ -10,12 +10,11 @@ pub async fn build_buy_game_tx(
 ) -> AppResult<Transaction> {
     use crate::generated::instructions::BuyGameBuilder;
     use crate::{
-        utils::{
-            DEVELOPER_COLLECTION_SEED, DEVELOPER_SEED, DEVELOPER_TREASURY_SEED,
-            GAME_DATA_SEED, GAME_KEY_ASSET_SEED, GAME_METADATA_SEED, GLOBAL_CONFIG_SEED,
-            GLOBAL_TREASURY_SEED,
-        },
         server::get_latest_blockhash,
+        utils::{
+            DEVELOPER_COLLECTION_SEED, DEVELOPER_SEED, DEVELOPER_TREASURY_SEED, GAME_DATA_SEED,
+            GAME_KEY_ASSET_SEED, GAME_METADATA_SEED, GLOBAL_CONFIG_SEED, GLOBAL_TREASURY_SEED,
+        },
     };
     use solana_pubkey::Pubkey;
 
@@ -23,11 +22,19 @@ pub async fn build_buy_game_tx(
     let developer_pubkey = Pubkey::from_str_const(&developer_arg);
 
     let (game_metadata_pda, _) = Pubkey::find_program_address(
-        &[GAME_METADATA_SEED, developer_pubkey.as_ref(), game_name.as_bytes()],
+        &[
+            GAME_METADATA_SEED,
+            developer_pubkey.as_ref(),
+            game_name.as_bytes(),
+        ],
         &crate::REPLAYER_ID,
     );
     let (game_data_pda, _) = Pubkey::find_program_address(
-        &[GAME_DATA_SEED, developer_pubkey.as_ref(), game_name.as_bytes()],
+        &[
+            GAME_DATA_SEED,
+            developer_pubkey.as_ref(),
+            game_name.as_bytes(),
+        ],
         &crate::REPLAYER_ID,
     );
     let (developer_account_pda, _) = Pubkey::find_program_address(

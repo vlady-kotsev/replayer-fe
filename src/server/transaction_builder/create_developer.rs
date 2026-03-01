@@ -10,8 +10,10 @@ pub async fn build_create_developer_tx(
 ) -> AppResult<Transaction> {
     use crate::generated::instructions::CreateDeveloperBuilder;
     use crate::{
-        utils::{BLACKLISTED_SEED, DEVELOPER_COLLECTION_SEED, DEVELOPER_SEED, DEVELOPER_TREASURY_SEED},
         server::get_latest_blockhash,
+        utils::{
+            BLACKLISTED_SEED, DEVELOPER_COLLECTION_SEED, DEVELOPER_SEED, DEVELOPER_TREASURY_SEED,
+        },
     };
     use solana_pubkey::Pubkey;
 

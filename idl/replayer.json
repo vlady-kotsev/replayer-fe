@@ -677,6 +677,7 @@
         },
         {
           "name": "game_metadata",
+          "writable": true,
           "pda": {
             "seeds": [
               {
@@ -1501,6 +1502,10 @@
           {
             "name": "max_supply",
             "type": "u64"
+          },
+          {
+            "name": "is_finalized",
+            "type": "bool"
           },
           {
             "name": "bump",

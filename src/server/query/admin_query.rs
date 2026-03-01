@@ -6,8 +6,8 @@ pub async fn is_admin(admin: String) -> AppResult<bool> {
     use std::sync::Arc;
 
     use crate::accounts::fetch_admin;
-    use crate::utils::ADMIN_SEED;
     use crate::error::AppError;
+    use crate::utils::ADMIN_SEED;
     use solana_client::rpc_client::RpcClient;
     use solana_pubkey::Pubkey;
 

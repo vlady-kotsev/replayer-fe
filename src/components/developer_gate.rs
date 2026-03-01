@@ -8,7 +8,9 @@ use crate::{
 
 #[component]
 pub fn DeveloperGate(children: ChildrenFn) -> impl IntoView {
-    let public_key = use_context::<WalletPublicKeyContext>().expect("Can't get wallet context").public_key;
+    let public_key = use_context::<WalletPublicKeyContext>()
+        .expect("Can't get wallet context")
+        .public_key;
 
     let company_name = RwSignal::new(String::new());
     let collection_uri = RwSignal::new(String::new());

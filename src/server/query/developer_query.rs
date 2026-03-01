@@ -6,8 +6,8 @@ pub async fn get_developer(developer: String) -> AppResult<Option<Developer>> {
     use std::sync::Arc;
 
     use crate::accounts::fetch_developer;
-    use crate::utils::DEVELOPER_SEED;
     use crate::error::AppError;
+    use crate::utils::DEVELOPER_SEED;
     use solana_client::rpc_client::RpcClient;
     use solana_pubkey::Pubkey;
 

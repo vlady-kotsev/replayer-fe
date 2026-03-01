@@ -254,9 +254,7 @@ fn WithdrawPlatformFeeForm() -> impl IntoView {
 }
 
 #[component]
-fn ActionStatus(
-    action: Action<(), Result<String, crate::error::AppError>>,
-) -> impl IntoView {
+fn ActionStatus(action: Action<(), Result<String, crate::error::AppError>>) -> impl IntoView {
     view! {
         <p class="action-status">
             {move || {

@@ -42,9 +42,14 @@ pub async fn get_all_games() -> AppResult<Vec<FetchedGameMetadata>> {
 
     let metadatas = fetch_all_game_metadata(&solana_client, &metadata_addresses)?
         .iter()
-        .map(|decoded_acc| FetchedGameMetadata {
-            address: decoded_acc.address,
-            data: decoded_acc.data.clone(),
+        .filter_map(|decoded_acc| {
+            decoded_acc
+                .data
+                .is_finalized
+                .then_some(FetchedGameMetadata {
+                    address: decoded_acc.address,
+                    data: decoded_acc.data.clone(),
+                })
         })
         .collect::<Vec<_>>();
 

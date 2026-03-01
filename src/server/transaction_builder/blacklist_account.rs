@@ -10,18 +10,16 @@ pub async fn build_blacklist_account_tx(
 ) -> AppResult<Transaction> {
     use crate::generated::instructions::BlacklistAccountBuilder;
     use crate::{
-        utils::{ADMIN_SEED, BLACKLISTED_SEED},
         server::get_latest_blockhash,
+        utils::{ADMIN_SEED, BLACKLISTED_SEED},
     };
     use solana_pubkey::Pubkey;
 
     let admin_pubkey = Pubkey::from_str_const(&admin);
     let address_pubkey = Pubkey::from_str_const(&address);
 
-    let (admin_account_pda, _) = Pubkey::find_program_address(
-        &[ADMIN_SEED, admin_pubkey.as_ref()],
-        &crate::REPLAYER_ID,
-    );
+    let (admin_account_pda, _) =
+        Pubkey::find_program_address(&[ADMIN_SEED, admin_pubkey.as_ref()], &crate::REPLAYER_ID);
     let (blacklist_account_pda, _) = Pubkey::find_program_address(
         &[BLACKLISTED_SEED, address_pubkey.as_ref()],
         &crate::REPLAYER_ID,
