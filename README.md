@@ -96,3 +96,7 @@ This is part of the **Replayer** project. Check out the other repos:
 - [replayer-be](https://github.com/vlady-kotsev/replayer-be) — Backend API
 - [replayer-program](https://github.com/vlady-kotsev/replayer-program) — Solana program
 
+## License
+
+MIT
+
