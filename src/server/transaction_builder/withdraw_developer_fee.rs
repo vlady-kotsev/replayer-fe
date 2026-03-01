@@ -9,7 +9,7 @@ pub async fn build_withdraw_developer_fee_tx(
 ) -> AppResult<Transaction> {
     use crate::generated::instructions::WithdrawDeveloperFeeBuilder;
     use crate::{
-        constants::{DEVELOPER_SEED, DEVELOPER_TREASURY_SEED},
+        utils::{DEVELOPER_SEED, DEVELOPER_TREASURY_SEED},
         server::get_latest_blockhash,
     };
     use solana_pubkey::Pubkey;

@@ -5,7 +5,7 @@ use solana_transaction::{Message, Transaction};
 #[server]
 pub async fn build_add_admin_tx(admin: String, new_admin: String) -> AppResult<Transaction> {
     use crate::generated::instructions::AddAdminBuilder;
-    use crate::{constants::ADMIN_SEED, server::get_latest_blockhash};
+    use crate::{server::get_latest_blockhash, utils::ADMIN_SEED};
 
     use solana_pubkey::Pubkey;
 

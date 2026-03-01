@@ -9,7 +9,7 @@ pub async fn build_init_global_config_tx(
 ) -> AppResult<Transaction> {
     use crate::generated::instructions::InitGlobalConfigBuilder;
     use crate::{
-        constants::{ADMIN_SEED, GLOBAL_CONFIG_SEED, GLOBAL_TREASURY_SEED},
+        utils::{ADMIN_SEED, GLOBAL_CONFIG_SEED, GLOBAL_TREASURY_SEED},
         server::get_latest_blockhash,
     };
     use solana_pubkey::Pubkey;

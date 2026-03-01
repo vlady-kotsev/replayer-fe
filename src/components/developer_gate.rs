@@ -8,17 +8,15 @@ use crate::{
 
 #[component]
 pub fn DeveloperGate(children: ChildrenFn) -> impl IntoView {
-    let public_key = use_context::<WalletPublicKeyContext>()
-        .expect("Can't get wallet context")
-        .public_key;
+    let public_key = use_context::<WalletPublicKeyContext>().expect("Can't get wallet context").public_key;
 
     let company_name = RwSignal::new(String::new());
     let collection_uri = RwSignal::new(String::new());
     let created = RwSignal::new(false);
 
-    let dev_check = LocalResource::new(move || {
-        let key = public_key.get();
-        async move {
+    let dev_check = Resource::new(
+        move || public_key.get(),
+        move |key| async move {
             #[cfg(feature = "hydrate")]
             {
                 match key {
@@ -28,8 +26,8 @@ pub fn DeveloperGate(children: ChildrenFn) -> impl IntoView {
             }
             #[cfg(not(feature = "hydrate"))]
             false
-        }
-    });
+        },
+    );
 
     let create_action = Action::new_unsync(move |_| async move {
         #[cfg(feature = "hydrate")]

@@ -9,7 +9,7 @@ pub async fn build_finalize_game_upload_tx(
 ) -> AppResult<Transaction> {
     use crate::generated::instructions::FinalizeGameUploadBuilder;
     use crate::{
-        constants::{DEVELOPER_SEED, GAME_DATA_SEED, GAME_METADATA_SEED},
+        utils::{DEVELOPER_SEED, GAME_DATA_SEED, GAME_METADATA_SEED},
         server::get_latest_blockhash,
     };
     use solana_pubkey::Pubkey;

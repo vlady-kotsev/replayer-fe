@@ -5,7 +5,7 @@ use solana_transaction::{Message, Transaction};
 #[server]
 pub async fn build_remove_admin_tx(admin: String, removed_admin: String) -> AppResult<Transaction> {
     use crate::generated::instructions::RemoveAdminBuilder;
-    use crate::{constants::ADMIN_SEED, server::get_latest_blockhash};
+    use crate::{utils::ADMIN_SEED, server::get_latest_blockhash};
     use solana_pubkey::Pubkey;
 
     let admin_pubkey = Pubkey::from_str_const(&admin);

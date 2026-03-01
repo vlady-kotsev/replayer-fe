@@ -10,7 +10,7 @@ pub async fn build_upload_game_chunk_tx(
 ) -> AppResult<Transaction> {
     use crate::generated::instructions::UploadGameChunkBuilder;
     use crate::{
-        constants::{GAME_DATA_SEED, GAME_METADATA_SEED},
+        utils::{GAME_DATA_SEED, GAME_METADATA_SEED},
         server::get_latest_blockhash,
     };
     use solana_pubkey::Pubkey;

@@ -10,7 +10,7 @@ pub async fn build_blacklist_account_tx(
 ) -> AppResult<Transaction> {
     use crate::generated::instructions::BlacklistAccountBuilder;
     use crate::{
-        constants::{ADMIN_SEED, BLACKLISTED_SEED},
+        utils::{ADMIN_SEED, BLACKLISTED_SEED},
         server::get_latest_blockhash,
     };
     use solana_pubkey::Pubkey;

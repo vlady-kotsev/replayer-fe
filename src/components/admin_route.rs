@@ -29,7 +29,7 @@ pub fn AdminRoute() -> impl IntoView {
                     match result {
                         Some(true) => view! { <Outlet /> }.into_any(),
                         Some(false) => view! { <Redirect path="/" /> }.into_any(),
-                        None => view! { <Spinner size=SpinnerSize::ExtraLarge/> }.into_any(),
+                        None => view! { <Spinner size=SpinnerSize::Huge/> }.into_any(),
                     }
                 })
             }}

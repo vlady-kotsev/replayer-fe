@@ -10,7 +10,7 @@ pub async fn build_buy_game_tx(
 ) -> AppResult<Transaction> {
     use crate::generated::instructions::BuyGameBuilder;
     use crate::{
-        constants::{
+        utils::{
             DEVELOPER_COLLECTION_SEED, DEVELOPER_SEED, DEVELOPER_TREASURY_SEED,
             GAME_DATA_SEED, GAME_KEY_ASSET_SEED, GAME_METADATA_SEED, GLOBAL_CONFIG_SEED,
             GLOBAL_TREASURY_SEED,

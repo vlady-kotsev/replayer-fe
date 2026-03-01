@@ -14,7 +14,7 @@ pub async fn build_allocate_game_account_tx(
 ) -> AppResult<Transaction> {
     use crate::generated::instructions::AllocateGameAccountBuilder;
     use crate::{
-        constants::{BLACKLISTED_SEED, GAME_DATA_SEED, GAME_METADATA_SEED},
+        utils::{BLACKLISTED_SEED, GAME_DATA_SEED, GAME_METADATA_SEED},
         server::get_latest_blockhash,
     };
     use solana_pubkey::Pubkey;

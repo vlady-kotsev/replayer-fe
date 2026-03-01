@@ -10,7 +10,7 @@ pub async fn build_withdraw_platform_fee_tx(
 ) -> AppResult<Transaction> {
     use crate::generated::instructions::WithdrawPlatformFeeBuilder;
     use crate::{
-        constants::{ADMIN_SEED, GLOBAL_CONFIG_SEED, GLOBAL_TREASURY_SEED},
+        utils::{ADMIN_SEED, GLOBAL_CONFIG_SEED, GLOBAL_TREASURY_SEED},
         server::get_latest_blockhash,
     };
     use solana_pubkey::Pubkey;

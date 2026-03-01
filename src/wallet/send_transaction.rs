@@ -1,4 +1,4 @@
-use crate::constants::SIGN_AND_SEND_TRANSACTION_METHOD;
+use crate::utils::SIGN_AND_SEND_TRANSACTION_METHOD;
 use crate::error::{AppError, AppResult};
 use solana_transaction::Transaction;
 
