@@ -12,7 +12,7 @@ async fn main() -> AppResult<()> {
     use leptos_axum::{generate_route_list, LeptosRoutes};
     use replayer_fe::app::*;
     use replayer_fe::config::{load_config, DEFAULT_CONFIG_FILE};
-    use solana_client::nonblocking::rpc_client::RpcClient;
+    use solana_client::rpc_client::RpcClient;
 
     let app_config = load_config().await?;
 

@@ -12,3 +12,6 @@ pub const BLACKLISTED_SEED: &[u8] = b"blacklisted";
 
 // Wallet
 pub const SIGN_AND_SEND_TRANSACTION_METHOD: &'static str = "signAndSendTransaction";
+
+// Local Storage
+pub const LS_PUBLIC_KEY: &'static str = "PUBLIC_KEY";

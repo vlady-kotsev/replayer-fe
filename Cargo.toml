@@ -22,30 +22,36 @@ web-sys = { version = "=0.3.77", features = [
     "RequestInit",
     "Response",
     "Window",
+    "Crypto",
+    "SubtleCrypto",
 ], optional = true }
 wasm-bindgen-futures = "=0.4.50"
 serde = { version = "1.0.228", features = ["derive"] }
 toml = "0.9.8"
 solana-keypair = { version = "3.1.2", optional = true }
-borsh = { version = "1.6.0", features = ["derive"], optional = true }
+borsh = { version = "1.6.0", features = ["derive"] }
 solana-instruction = { version = "3.2.0", features = ["serde"] }
 solana-pubkey = { version = "4.1.0", features = ["borsh", "curve25519"] }
-solana-account-info = { version = "3.1.0", optional = true }
-solana-program-error = { version = "3.0.0", optional = true }
-solana-cpi = { version = "3.1.0", optional = true }
-num-derive = { version = "0.4.2", optional = true }
-thiserror = { version = "2.0.18", optional = true }
-num-traits = { version = "0.2.19", optional = true }
+solana-account-info = "3.1.0"
+solana-program-error = "3.0.0"
+solana-cpi = "3.1.0"
+num-derive = "0.4.2"
+thiserror = "2.0.18"
+num-traits = "0.2.19"
 solana-transaction = { version = "4.0.0", features = ["serde"] }
 bincode = "1"
 bs58 = "0.5.1"
 solana-hash = "4.2.0"
 solana-client = { version = "3.1.9", optional = true }
 serde-wasm-bindgen = "0.6.5"
-thaw = { version = "0.5.0-beta" } # This hits recursion limit, in order to fix add #![recursion_limit = "256"] in thaw/src/lib.rs
+thaw = { version = "0.5.0-beta" } #Library Bug: This hits recursion limit, in order to fix add #![recursion_limit = "256"] in thaw/src/lib.rs
+solana-account = "3.1.0"
+serde_with = "3.17.0"
+leptos-use = { version = "0.17.0", features = ["storage"] }
 
 [features]
 hydrate = [
+    "serde",
     "leptos/hydrate",
     "thaw/hydrate",
     "dep:console_error_panic_hook",
@@ -54,6 +60,8 @@ hydrate = [
     "dep:web-sys",
 ]
 ssr = [
+    "fetch",
+    "serde",
     "thaw/ssr",
     "dep:axum",
     "dep:tokio",
@@ -61,14 +69,8 @@ ssr = [
     "leptos/ssr",
     "leptos_meta/ssr",
     "leptos_router/ssr",
+    "leptos-use/ssr",
     "dep:solana-keypair",
-    "dep:borsh",
-    "dep:solana-account-info",
-    "dep:solana-program-error",
-    "dep:solana-cpi",
-    "dep:num-derive",
-    "dep:thiserror",
-    "dep:num-traits",
     "dep:solana-client",
 ]
 serde = []
