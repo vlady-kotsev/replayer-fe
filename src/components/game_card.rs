@@ -1,4 +1,4 @@
-use leptos::{logging, prelude::*};
+use leptos::prelude::*;
 use thaw::{
     Button, Card, CardFooter, CardHeader, CardHeaderDescription, Image, ImageShape, Spinner,
     SpinnerSize,

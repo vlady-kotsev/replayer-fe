@@ -5,7 +5,7 @@ use solana_transaction::Transaction;
 #[cfg(feature = "hydrate")]
 pub async fn send_transaction(transaction: Transaction) -> AppResult<String> {
     use crate::wallet::{
-        is_phantom_installed, phantom_request, PhantomParams, PhantomRequest,
+        is_phantom_installed, phantom_request, PhantomOptions, PhantomParams, PhantomRequest,
         PhantomSignatureResponse,
     };
 
@@ -20,6 +20,9 @@ pub async fn send_transaction(transaction: Transaction) -> AppResult<String> {
         method: SIGN_AND_SEND_TRANSACTION_METHOD,
         params: PhantomParams {
             message: encoded_tx_bytes,
+            options: PhantomOptions {
+                commitment: "confirmed",
+            },
         },
     };
     let js_req = serde_wasm_bindgen::to_value(&req).map_err(|e| e.to_string())?;

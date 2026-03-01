@@ -28,6 +28,8 @@ pub mod config {
     #[derive(Clone, Deserialize)]
     pub struct AppConfig {
         pub backend_url: String,
+        #[serde(deserialize_with = "deserialize_address")]
+        pub backend_signer: Pubkey,
     }
 
     pub async fn load_config() -> AppResult<Config> {

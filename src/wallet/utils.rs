@@ -3,8 +3,14 @@ use serde::{Deserialize, Serialize};
 use wasm_bindgen::prelude::*;
 
 #[derive(Serialize)]
+pub struct PhantomOptions {
+    pub commitment: &'static str,
+}
+
+#[derive(Serialize)]
 pub struct PhantomParams {
     pub message: String,
+    pub options: PhantomOptions,
 }
 
 #[derive(Serialize)]

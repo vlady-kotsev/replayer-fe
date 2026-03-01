@@ -1,4 +1,3 @@
-mod api;
 pub mod app;
 mod components;
 pub mod config;
@@ -8,8 +7,8 @@ mod models;
 mod pages;
 mod server;
 mod utils;
+mod vm;
 mod wallet;
-
 pub use generated::*;
 
 #[cfg(feature = "hydrate")]

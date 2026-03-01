@@ -24,7 +24,7 @@ pub fn Nav() -> impl IntoView {
             </A>
             <ul class="nav-links">
                 <li>
-                    <A href="/">"Play"</A>
+                    <A href="/play">"Play"</A>
                 </li>
                 <li>
                     <A href="/buy">"Buy Games"</A>

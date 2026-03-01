@@ -17,12 +17,16 @@ pub struct App {
 #[cfg(feature = "ssr")]
 impl App {
     pub async fn new() -> AppResult<App> {
-        use crate::config::{load_config, DEFAULT_CONFIG_FILE};
+        use crate::{
+            config::{load_config, DEFAULT_CONFIG_FILE},
+            server::ApiClient,
+        };
         use axum::Router;
 
         use bundlr_sdk::{currency::solana::SolanaBuilder, BundlrBuilder};
         use leptos::prelude::*;
         use leptos_axum::{generate_route_list, LeptosRoutes};
+        use reqwest::Client;
         use solana_client::{client_error::reqwest::Url, rpc_client::RpcClient};
         use solana_keypair::Keypair;
 
@@ -37,6 +41,7 @@ impl App {
         let leptos_options = leptos_config.leptos_options;
         let routes = generate_route_list(App);
         let solana_client = Arc::new(RpcClient::new(app_config.solana.rpc_url.clone()));
+        let api_client = ApiClient::new(Client::new(), app_config.app.backend_url.clone());
 
         let bundlr_keypair = Keypair::new_from_array(
             app_config.solana.bundlr_keypair[..32]
@@ -73,6 +78,7 @@ impl App {
                         provide_context(config.clone());
                         provide_context(solana_client.clone());
                         provide_context(bundlr.clone());
+                        provide_context(api_client.clone());
                     }
                 },
                 {

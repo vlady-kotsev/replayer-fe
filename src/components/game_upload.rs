@@ -1,12 +1,12 @@
 use crate::error::{AppError, AppResult};
 use crate::server::{
     build_allocate_game_account_tx, build_finalize_game_upload_tx, build_upload_game_chunk_tx,
-    upload_game_metadata,
+    encrypt_game_data, upload_game_metadata,
 };
+use base64::{engine::general_purpose::STANDARD, Engine};
 use leptos::{prelude::*, task::spawn_local};
 use thaw::{Button, ButtonAppearance, FileList, Input, Upload, UploadDragger};
 use wasm_bindgen_futures::{js_sys::Uint8Array, JsFuture};
-
 const CHUNK_SIZE: usize = 900;
 
 #[component]
@@ -164,7 +164,8 @@ async fn upload_game_flow(
     image_content_type: StoredValue<Option<String>>,
     status: RwSignal<String>,
 ) -> AppResult<()> {
-    use crate::wallet::{get_public_key, send_transaction};
+    use crate::server::create_game;
+    use crate::wallet::{get_public_key, send_transaction, sign_message, Message};
 
     let bytes = file_bytes
         .get_value()
@@ -179,7 +180,37 @@ async fn upload_game_flow(
 
     let developer = get_public_key().await;
 
-    // 0. Upload image and create metadata URI
+    // 0. Register game with backend
+    status.set("Registering game...".into());
+    let valid_period = (js_sys::Date::now() / 1000.0) as i64 + 7200; // now + 2 hours
+    let (signature, _msg) = sign_message(Message {
+        valid_period,
+        game_name: game_name.clone(),
+    })
+    .await?;
+    let create_game_reponse = create_game(
+        game_name.clone(),
+        developer.clone(),
+        signature,
+        valid_period,
+    )
+    .await
+    .map_err(|e| AppError::custom(e.to_string()))?;
+
+    // 1. Encrypt game bytes on server
+    status.set("Encrypting game data...".into());
+    let encrypted_b64 = encrypt_game_data(
+        create_game_reponse.encryption_key,
+        create_game_reponse.nonce,
+        STANDARD.encode(&bytes),
+    )
+    .await
+    .map_err(|e| AppError::custom(e.to_string()))?;
+    let bytes = STANDARD
+        .decode(&encrypted_b64)
+        .map_err(|e| AppError::custom(format!("Base64 decode error: {e}")))?;
+
+    // 2. Upload image and create metadata URI
     status.set("Uploading game image...".into());
     let img_bytes = image_bytes
         .get_value()
@@ -221,7 +252,7 @@ async fn upload_game_flow(
 
     // 3. Finalize
     status.set("Finalizing upload...".into());
-    let tx = build_finalize_game_upload_tx(developer, game_name)
+    let tx = build_finalize_game_upload_tx(developer.clone(), game_name.clone())
         .await
         .map_err(|e| AppError::custom(e.to_string()))?;
     send_transaction(tx).await?;

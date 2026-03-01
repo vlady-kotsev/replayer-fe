@@ -1,9 +1,11 @@
 [app]
-backend_url = "some"
+backend_url = "http://127.0.0.1:3003"
 
 [solana]
-rpc_url = "http://127.0.0.1:8899"
-program_id = "3L4ZDN7REkTk97ybn5FS4NUBMmcbQQQjQbKH6kET595c"
+rpc_url = ""
+program_id = "28bk4vaL8MfDZ5xbcitXNJjYbiRUaR3mnK21RnAjT8Ya"
+bundlr_keypair = ""
+bundlr_url = "https://devnet.bundlr.network/"
 
 [package.metadata.leptos]
 output-name = "replayer-fe"

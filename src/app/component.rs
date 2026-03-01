@@ -13,7 +13,7 @@ use thaw::{ConfigProvider, Theme};
 use crate::{
     app::WalletPublicKeyContext,
     components::{AdminRoute, Footer, Nav},
-    pages::{AdminDashboard, BuyGamePage, HomePage, PublishGamePage},
+    pages::{AdminDashboard, BuyGamePage, HomePage, PlayPage, PublishGamePage},
     utils::LS_PUBLIC_KEY,
 };
 
@@ -46,6 +46,7 @@ pub fn App() -> impl IntoView {
                     <Routes fallback=|| "Page not found.".into_view()>
                         <Route path=StaticSegment("") view=HomePage />
                         <Route path=StaticSegment("/buy") view=BuyGamePage />
+                        <Route path=StaticSegment("/play") view=PlayPage />
                         <Route path=StaticSegment("/publish") view=PublishGamePage />
                         <ParentRoute path=StaticSegment("/admin") view=AdminRoute>
                             <Route path=StaticSegment("") view=AdminDashboard />

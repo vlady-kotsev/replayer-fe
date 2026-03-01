@@ -1,5 +1,5 @@
 {
-  "address": "3L4ZDN7REkTk97ybn5FS4NUBMmcbQQQjQbKH6kET595c",
+  "address": "28bk4vaL8MfDZ5xbcitXNJjYbiRUaR3mnK21RnAjT8Ya",
   "metadata": {
     "name": "replayer",
     "version": "0.1.0",
@@ -803,7 +803,7 @@
         },
         {
           "name": "this",
-          "address": "3L4ZDN7REkTk97ybn5FS4NUBMmcbQQQjQbKH6kET595c"
+          "address": "28bk4vaL8MfDZ5xbcitXNJjYbiRUaR3mnK21RnAjT8Ya"
         },
         {
           "name": "program_data"

@@ -16,20 +16,15 @@ pub fn DeveloperGate(children: ChildrenFn) -> impl IntoView {
     let collection_uri = RwSignal::new(String::new());
     let created = RwSignal::new(false);
 
-    let dev_check = Resource::new(
-        move || public_key.get(),
-        move |key| async move {
-            #[cfg(feature = "hydrate")]
-            {
-                match key {
-                    Some(k) => developer_exists(k).await.unwrap_or(false),
-                    None => false,
-                }
+    let dev_check = LocalResource::new(move || {
+        let key = public_key.get();
+        async move {
+            match key {
+                Some(k) => developer_exists(k).await.unwrap_or(false),
+                None => false,
             }
-            #[cfg(not(feature = "hydrate"))]
-            false
-        },
-    );
+        }
+    });
 
     let create_action = Action::new_unsync(move |_| async move {
         #[cfg(feature = "hydrate")]
