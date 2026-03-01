@@ -2,3 +2,9 @@
 @use 'base';
 @use 'components/nav';
 @use 'components/footer';
+@use 'pages/home';
+@use 'pages/how_it_works';
+@use 'pages/play';
+@use 'pages/buy';
+@use 'pages/publish';
+@use 'pages/admin';

@@ -1,0 +1,30 @@
+@use '../variables' as *;
+
+.play-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.play-controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+
+  button {
+    margin-top: 0;
+  }
+}
+
+.play-status {
+  font-size: 1.4rem;
+  color: $neon-green;
+}
+
+#canvas {
+  border: 2px solid $neon-green;
+  box-shadow: 0 0 15px rgba($neon-green, 0.4);
+  background: black;
+}

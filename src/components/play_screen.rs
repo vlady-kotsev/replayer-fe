@@ -24,30 +24,27 @@ pub fn GameScreen(game_to_play: RwSignal<String>) -> impl IntoView {
             running_cleanup.store(false, Ordering::Relaxed);
         });
 
-        // Keyboard listeners (no-op when emu is None)
-        let document = web_sys::window().unwrap().document().unwrap();
+        if let Some(document) = web_sys::window().and_then(|w| w.document()) {
+            let emu_kd = emu.clone();
+            let keydown_cb = Closure::wrap(Box::new(move |evt: web_sys::KeyboardEvent| {
+                if let Some(e) = emu_kd.borrow_mut().as_mut() {
+                    e.keypress(evt, true);
+                }
+            }) as Box<dyn FnMut(_)>);
+            let _ = document
+                .add_event_listener_with_callback("keydown", keydown_cb.as_ref().unchecked_ref());
+            keydown_cb.forget();
 
-        let emu_kd = emu.clone();
-        let keydown_cb = Closure::wrap(Box::new(move |evt: web_sys::KeyboardEvent| {
-            if let Some(e) = emu_kd.borrow_mut().as_mut() {
-                e.keypress(evt, true);
-            }
-        }) as Box<dyn FnMut(_)>);
-        document
-            .add_event_listener_with_callback("keydown", keydown_cb.as_ref().unchecked_ref())
-            .unwrap();
-        keydown_cb.forget();
-
-        let emu_ku = emu.clone();
-        let keyup_cb = Closure::wrap(Box::new(move |evt: web_sys::KeyboardEvent| {
-            if let Some(e) = emu_ku.borrow_mut().as_mut() {
-                e.keypress(evt, false);
-            }
-        }) as Box<dyn FnMut(_)>);
-        document
-            .add_event_listener_with_callback("keyup", keyup_cb.as_ref().unchecked_ref())
-            .unwrap();
-        keyup_cb.forget();
+            let emu_ku = emu.clone();
+            let keyup_cb = Closure::wrap(Box::new(move |evt: web_sys::KeyboardEvent| {
+                if let Some(e) = emu_ku.borrow_mut().as_mut() {
+                    e.keypress(evt, false);
+                }
+            }) as Box<dyn FnMut(_)>);
+            let _ = document
+                .add_event_listener_with_callback("keyup", keyup_cb.as_ref().unchecked_ref());
+            keyup_cb.forget();
+        }
 
         // Game loop (no-op when emu is None)
         let f: Rc<RefCell<Option<Closure<dyn FnMut()>>>> = Rc::new(RefCell::new(None));
@@ -66,16 +63,18 @@ pub fn GameScreen(game_to_play: RwSignal<String>) -> impl IntoView {
                 e.tick_timers();
                 e.draw_screen(SCALE);
             }
-            web_sys::window()
-                .unwrap()
-                .request_animation_frame(f.borrow().as_ref().unwrap().as_ref().unchecked_ref())
-                .unwrap();
+            if let Some(window) = web_sys::window() {
+                if let Some(cb) = f.borrow().as_ref() {
+                    let _ = window.request_animation_frame(cb.as_ref().unchecked_ref());
+                }
+            }
         }) as Box<dyn FnMut()>));
 
-        web_sys::window()
-            .unwrap()
-            .request_animation_frame(g.borrow().as_ref().unwrap().as_ref().unchecked_ref())
-            .unwrap();
+        if let Some(window) = web_sys::window() {
+            if let Some(cb) = g.borrow().as_ref() {
+                let _ = window.request_animation_frame(cb.as_ref().unchecked_ref());
+            }
+        }
 
         // Fetch ROM when game selection changes
         let emu_effect = emu.clone();
@@ -108,7 +107,8 @@ pub fn GameScreen(game_to_play: RwSignal<String>) -> impl IntoView {
                     {
                         Ok(r) => r,
                         Err(e) => {
-                            status.set(format!("Error: {e}"));
+                            leptos::logging::log!("Play error: {e}");
+                            status.set("Something went wrong. Please try again.".into());
                             return;
                         }
                     };
@@ -127,7 +127,8 @@ pub fn GameScreen(game_to_play: RwSignal<String>) -> impl IntoView {
                     {
                         Ok(r) => r,
                         Err(e) => {
-                            status.set(format!("Error: {e}"));
+                            leptos::logging::log!("Play error: {e}");
+                            status.set("Something went wrong. Please try again.".into());
                             return;
                         }
                     };
@@ -138,7 +139,8 @@ pub fn GameScreen(game_to_play: RwSignal<String>) -> impl IntoView {
                         match get_game_data(developer.to_string(), name.to_string()).await {
                             Ok(r) => r,
                             Err(e) => {
-                                status.set(format!("Error: {e}"));
+                                leptos::logging::log!("Play error: {e}");
+                                status.set("Something went wrong. Please try again.".into());
                                 return;
                             }
                         };
@@ -154,14 +156,16 @@ pub fn GameScreen(game_to_play: RwSignal<String>) -> impl IntoView {
                     {
                         Ok(r) => r,
                         Err(e) => {
-                            status.set(format!("Error: {e}"));
+                            leptos::logging::log!("Play error: {e}");
+                            status.set("Something went wrong. Please try again.".into());
                             return;
                         }
                     };
                     let rom_bytes = match STANDARD.decode(&decrypted_b64) {
                         Ok(r) => r,
                         Err(e) => {
-                            status.set(format!("Error: {e}"));
+                            leptos::logging::log!("Play error: {e}");
+                            status.set("Something went wrong. Please try again.".into());
                             return;
                         }
                     };
@@ -173,24 +177,31 @@ pub fn GameScreen(game_to_play: RwSignal<String>) -> impl IntoView {
                     let data = js_sys::Uint8Array::from(rom_bytes.as_slice());
                     let mut emu_ref = emu_clone.borrow_mut();
                     if emu_ref.is_none() {
-                        *emu_ref = Some(crate::vm::EmuWasm::new());
+                        match crate::vm::EmuWasm::new() {
+                            Some(e) => *emu_ref = Some(e),
+                            None => {
+                                leptos::logging::log!("Failed to initialize emulator");
+                                status.set("Something went wrong. Please try again.".into());
+                                return;
+                            }
+                        }
                     }
-                    let e = emu_ref.as_mut().unwrap();
-                    e.reset();
-                    e.load_game(data);
-                    status.set("Game loaded!".into());
+                    if let Some(e) = emu_ref.as_mut() {
+                        e.reset();
+                        e.load_game(data);
+                        status.set("Game loaded!".into());
+                    }
                 }
             });
         });
     }
 
     view! {
-        <p>{move || status.get()}</p>
+        <p class="play-status">{move || status.get()}</p>
         <canvas
             id="canvas"
             width="960"
             height="480"
-            style="border: 1px solid white; background: black;"
         />
     }
 }

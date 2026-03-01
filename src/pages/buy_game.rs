@@ -37,8 +37,9 @@ pub fn BuyGamePage() -> impl IntoView {
                                         .into_any()
                                 }
                                 Err(e) => {
+                                    leptos::logging::log!("Error loading games: {e}");
                                     view! {
-                                        <p class="error">{format!("Error loading games: {e}")}</p>
+                                        <p class="error">"Something went wrong. Please try again."</p>
                                     }
                                         .into_any()
                                 }

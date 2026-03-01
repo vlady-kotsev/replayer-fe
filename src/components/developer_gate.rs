@@ -68,7 +68,7 @@ pub fn DeveloperGate(children: ChildrenFn) -> impl IntoView {
             </Show>
             <Show when=is_developer>{children()}</Show>
             <Show when=needs_registration>
-                <div>
+                <div class="dev-register-form">
                     <h3>"Register as Developer"</h3>
                     <Input value=company_name placeholder="Company Name" />
                     <Input value=collection_uri placeholder="Collection URI" />

@@ -27,7 +27,7 @@ pub fn PlayPage() -> impl IntoView {
 
     view! {
         <div class="play-page">
-            <h1>"My Games"</h1>
+            <h1>"Games"</h1>
             <Show
                 when=move || public_key.get().is_some()
                 fallback=|| view! { <p>"Connect your wallet to see your games."</p> }
@@ -46,34 +46,37 @@ pub fn PlayPage() -> impl IntoView {
                                     }
                                     Ok(games) => {
                                         view! {
-                                            <Select value=selected_game>
-                                                <option value="" disabled selected>"Select a game"</option>
-                                                {games
-                                                    .into_iter()
-                                                    .map(|game| {
-                                                        let name = game.data.game_name.clone();
-                                                        let val = format!("{}|{}", game.data.developer, name);
-                                                        let display_name = name;
-                                                        view! {
-                                                            <option value=val>{display_name}</option>
-                                                        }
-                                                    })
-                                                    .collect_view()}
-                                            </Select>
-                                            <Button
-                                                appearance=ButtonAppearance::Primary
-                                                on_click=on_play
-                                                disabled=Signal::derive(move || selected_game.get().is_empty())
-                                            >
-                                                "Play"
-                                            </Button>
+                                            <div class="play-controls">
+                                                <Select value=selected_game>
+                                                    <option value="" disabled selected>"Select a game"</option>
+                                                    {games
+                                                        .into_iter()
+                                                        .map(|game| {
+                                                            let name = game.data.game_name.clone();
+                                                            let val = format!("{}|{}", game.data.developer, name);
+                                                            let display_name = name;
+                                                            view! {
+                                                                <option value=val>{display_name}</option>
+                                                            }
+                                                        })
+                                                        .collect_view()}
+                                                </Select>
+                                                <Button
+                                                    appearance=ButtonAppearance::Primary
+                                                    on_click=on_play
+                                                    disabled=Signal::derive(move || selected_game.get().is_empty())
+                                                >
+                                                    "Play"
+                                                </Button>
+                                            </div>
                                         }
                                             .into_any()
                                     }
                                     Err(e) => {
+                                        leptos::logging::log!("Error loading games: {e}");
                                         view! {
                                             <p class="error">
-                                                {format!("Error loading games: {e}")}
+                                                "Something went wrong. Please try again."
                                             </p>
                                         }
                                             .into_any()

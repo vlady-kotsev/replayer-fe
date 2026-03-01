@@ -1,0 +1,64 @@
+@use '../variables' as *;
+
+.admin-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.admin-layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 100%;
+}
+
+.admin-hero {
+  flex-shrink: 0;
+  width: 800px;
+  max-width: 55%;
+  border-radius: 12px;
+  border: 2px solid $accent-purple;
+  box-shadow: 0 0 20px rgba($accent-purple, 0.4), 0 0 60px rgba($neon-blue, 0.15);
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .admin-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .admin-hero {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
+.admin-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .admin-actions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-action-card {
+  background: $bg-surface;
+  padding: 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+
+  &:nth-child(1) { border-left: 3px solid $accent-purple; }
+  &:nth-child(2) { border-left: 3px solid $neon-green; }
+  &:nth-child(3) { border-left: 3px solid $neon-blue; }
+  &:nth-child(4) { border-left: 3px solid $neon-red; }
+  &:nth-child(5) { border-left: 3px solid $accent-purple; }
+}

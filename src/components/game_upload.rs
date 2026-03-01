@@ -5,7 +5,10 @@ use crate::server::{
 };
 use base64::{engine::general_purpose::STANDARD, Engine};
 use leptos::{prelude::*, task::spawn_local};
-use thaw::{Button, ButtonAppearance, FileList, Input, Upload, UploadDragger};
+use thaw::{
+    Button, ButtonAppearance, FileList, Input, Toast, ToastBody, ToastIntent, ToastOptions,
+    ToastTitle, ToasterInjection, Upload, UploadDragger,
+};
 use wasm_bindgen_futures::{js_sys::Uint8Array, JsFuture};
 const CHUNK_SIZE: usize = 900;
 
@@ -21,12 +24,17 @@ pub fn GameUpload() -> impl IntoView {
     let image_loaded = RwSignal::new(false);
     let status = RwSignal::new(String::new());
     let uploading = RwSignal::new(false);
+    let toaster = ToasterInjection::expect_context();
 
     let handle_file = move |file_list: FileList| {
         if let Some(file) = file_list.get(0) {
             let file = file.to_owned();
             spawn_local(async move {
-                let array_buffer = JsFuture::from(file.array_buffer()).await.unwrap();
+                let Ok(array_buffer) = JsFuture::from(file.array_buffer()).await else {
+                    leptos::logging::log!("Failed to read game file");
+                    status.set("Failed to read game file.".into());
+                    return;
+                };
                 let bytes = Uint8Array::new(&array_buffer).to_vec();
                 status.set(format!("Game file loaded: {} bytes", bytes.len()));
                 file_bytes.set_value(Some(bytes));
@@ -40,7 +48,11 @@ pub fn GameUpload() -> impl IntoView {
             let file = file.to_owned();
             spawn_local(async move {
                 let content_type = file.type_();
-                let array_buffer = JsFuture::from(file.array_buffer()).await.unwrap();
+                let Ok(array_buffer) = JsFuture::from(file.array_buffer()).await else {
+                    leptos::logging::log!("Failed to read image file");
+                    status.set("Failed to read image file.".into());
+                    return;
+                };
                 let bytes = Uint8Array::new(&array_buffer).to_vec();
                 status.set(format!("Image loaded: {} bytes", bytes.len()));
                 image_bytes.set_value(Some(bytes));
@@ -73,6 +85,17 @@ pub fn GameUpload() -> impl IntoView {
             match result {
                 Ok(_) => {
                     status.set("Game published successfully!".into());
+                    toaster.dispatch_toast(
+                        move || {
+                            view! {
+                                <Toast>
+                                    <ToastTitle>"Game Published"</ToastTitle>
+                                    <ToastBody>"Your game will be available for purchase shortly."</ToastBody>
+                                </Toast>
+                            }
+                        },
+                        ToastOptions::default().with_intent(ToastIntent::Success),
+                    );
                     game_name.set(String::new());
                     game_price.set(String::new());
                     max_supply.set(String::new());
@@ -82,7 +105,10 @@ pub fn GameUpload() -> impl IntoView {
                     image_content_type.set_value(None);
                     image_loaded.set(false);
                 }
-                Err(e) => status.set(format!("Error: {e}")),
+                Err(e) => {
+                    leptos::logging::log!("Upload error: {e}");
+                    status.set("Something went wrong. Please try again.".into());
+                }
             }
             uploading.set(false);
         });
@@ -90,7 +116,7 @@ pub fn GameUpload() -> impl IntoView {
 
     view! {
         <div class="game-upload">
-            <h2>"Publish Game"</h2>
+            <h2>"Game data"</h2>
             <Input value=game_name placeholder="Game Name" />
             <Input value=game_price placeholder="Price (lamports)" />
             <Input value=max_supply placeholder="Max Supply" />

@@ -26,7 +26,9 @@ pub struct PhantomSignatureResponse {
 
 #[cfg(feature = "hydrate")]
 pub fn is_phantom_installed() -> bool {
-    let window = web_sys::window().unwrap();
+    let Some(window) = web_sys::window() else {
+        return false;
+    };
     let solana = js_sys::Reflect::get(&window, &JsValue::from_str("solana"));
     solana
         .map(|v| !v.is_undefined() && !v.is_null())

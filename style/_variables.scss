@@ -9,6 +9,9 @@ $bg-surface:    #333333;
 
 // --- Accent colors ---
 $accent-purple: #9b09bc;
+$neon-green:    #39ff14;
+$neon-blue:     #00d4ff;
+$neon-red:      #ff1744;
 
 // --- Text ---
 $text-primary:   #e0e0e0;
@@ -31,4 +34,7 @@ $transition-fast: 0.2s ease;
   --text-bright:   #{$text-bright};
   --border-subtle: #{$border-subtle};
   --nav-height:    #{$nav-height};
+  --neon-green:    #{$neon-green};
+  --neon-blue:     #{$neon-blue};
+  --neon-red:      #{$neon-red};
 }

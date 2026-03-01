@@ -1,0 +1,61 @@
+@use '../variables' as *;
+
+.how-it-works {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.hiw-section {
+  background: $bg-surface;
+  padding: 2rem;
+  border-radius: 10px;
+  border: 1px solid $border-subtle;
+
+  h2 {
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+  }
+
+  ol {
+    list-style: decimal;
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+
+    li {
+      font-size: 1.3rem;
+      color: $text-primary;
+    }
+  }
+}
+
+.hiw-publish {
+  border-left: 3px solid $accent-purple;
+
+  h2 {
+    color: $accent-purple;
+    text-shadow: 0 0 8px rgba($accent-purple, 0.5);
+  }
+}
+
+.hiw-buy {
+  border-left: 3px solid $neon-green;
+
+  h2 {
+    color: $neon-green;
+    text-shadow: 0 0 8px rgba($neon-green, 0.5);
+  }
+}
+
+.hiw-play {
+  border-left: 3px solid $neon-blue;
+
+  h2 {
+    color: $neon-blue;
+    text-shadow: 0 0 8px rgba($neon-blue, 0.5);
+  }
+}

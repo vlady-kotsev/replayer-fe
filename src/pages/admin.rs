@@ -1,5 +1,8 @@
 use leptos::prelude::*;
-use thaw::{Button, ButtonAppearance, Input};
+use thaw::{
+    Button, ButtonAppearance, Input, Toast, ToastBody, ToastIntent, ToastOptions, ToastTitle,
+    ToasterInjection,
+};
 
 use crate::{
     app::WalletPublicKeyContext,
@@ -9,17 +12,42 @@ use crate::{
     },
 };
 
+fn dispatch_result_toast(toaster: &ToasterInjection, result: &Result<String, crate::error::AppError>) {
+    let (intent, title, body) = match result {
+        Ok(sig) => (ToastIntent::Success, "Success", format!("Signature: {sig}")),
+        Err(e) => {
+            leptos::logging::log!("Admin action error: {e}");
+            (ToastIntent::Error, "Error", "Something went wrong. Please try again.".to_string())
+        }
+    };
+    let title = title.to_string();
+    toaster.dispatch_toast(
+        move || {
+            view! {
+                <Toast>
+                    <ToastTitle>{title.clone()}</ToastTitle>
+                    <ToastBody>{body.clone()}</ToastBody>
+                </Toast>
+            }
+        },
+        ToastOptions::default().with_intent(intent),
+    );
+}
+
 #[component]
 pub fn AdminDashboard() -> impl IntoView {
     view! {
         <div class="admin-dashboard">
             <h1>"Admin Dashboard"</h1>
-            <div class="admin-actions">
-                <AddAdminForm />
-                <RemoveAdminForm />
-                <BlacklistAccountForm />
-                <UnblacklistAccountForm />
-                <WithdrawPlatformFeeForm />
+            <div class="admin-layout">
+                <img class="admin-hero" src="/admin.png" alt="Admin Dashboard" />
+                <div class="admin-actions">
+                    <AddAdminForm />
+                    <RemoveAdminForm />
+                    <BlacklistAccountForm />
+                    <UnblacklistAccountForm />
+                    <WithdrawPlatformFeeForm />
+                </div>
             </div>
         </div>
     }
@@ -31,6 +59,7 @@ fn AddAdminForm() -> impl IntoView {
         .expect("Can't get wallet context")
         .public_key;
     let new_admin = RwSignal::new(String::new());
+    let toaster = ToasterInjection::expect_context();
 
     let action = Action::new_unsync(move |_| async move {
         #[cfg(feature = "hydrate")]
@@ -49,6 +78,12 @@ fn AddAdminForm() -> impl IntoView {
         Ok::<String, crate::error::AppError>(String::new())
     });
 
+    Effect::new(move || {
+        if let Some(result) = action.value().get() {
+            dispatch_result_toast(&toaster, &result);
+        }
+    });
+
     view! {
         <div class="admin-action-card">
             <h2>"Add Admin"</h2>
@@ -65,7 +100,6 @@ fn AddAdminForm() -> impl IntoView {
             >
                 "Add Admin"
             </Button>
-            <ActionStatus action=action />
         </div>
     }
 }
@@ -76,6 +110,7 @@ fn RemoveAdminForm() -> impl IntoView {
         .expect("Can't get wallet context")
         .public_key;
     let removed_admin = RwSignal::new(String::new());
+    let toaster = ToasterInjection::expect_context();
 
     let action = Action::new_unsync(move |_| async move {
         #[cfg(feature = "hydrate")]
@@ -94,6 +129,12 @@ fn RemoveAdminForm() -> impl IntoView {
         Ok::<String, crate::error::AppError>(String::new())
     });
 
+    Effect::new(move || {
+        if let Some(result) = action.value().get() {
+            dispatch_result_toast(&toaster, &result);
+        }
+    });
+
     view! {
         <div class="admin-action-card">
             <h2>"Remove Admin"</h2>
@@ -110,7 +151,6 @@ fn RemoveAdminForm() -> impl IntoView {
             >
                 "Remove Admin"
             </Button>
-            <ActionStatus action=action />
         </div>
     }
 }
@@ -121,6 +161,7 @@ fn BlacklistAccountForm() -> impl IntoView {
         .expect("Can't get wallet context")
         .public_key;
     let address = RwSignal::new(String::new());
+    let toaster = ToasterInjection::expect_context();
 
     let action = Action::new_unsync(move |_| async move {
         #[cfg(feature = "hydrate")]
@@ -139,6 +180,12 @@ fn BlacklistAccountForm() -> impl IntoView {
         Ok::<String, crate::error::AppError>(String::new())
     });
 
+    Effect::new(move || {
+        if let Some(result) = action.value().get() {
+            dispatch_result_toast(&toaster, &result);
+        }
+    });
+
     view! {
         <div class="admin-action-card">
             <h2>"Blacklist Account"</h2>
@@ -153,7 +200,6 @@ fn BlacklistAccountForm() -> impl IntoView {
             >
                 "Blacklist"
             </Button>
-            <ActionStatus action=action />
         </div>
     }
 }
@@ -164,6 +210,7 @@ fn UnblacklistAccountForm() -> impl IntoView {
         .expect("Can't get wallet context")
         .public_key;
     let address = RwSignal::new(String::new());
+    let toaster = ToasterInjection::expect_context();
 
     let action = Action::new_unsync(move |_| async move {
         #[cfg(feature = "hydrate")]
@@ -182,6 +229,12 @@ fn UnblacklistAccountForm() -> impl IntoView {
         Ok::<String, crate::error::AppError>(String::new())
     });
 
+    Effect::new(move || {
+        if let Some(result) = action.value().get() {
+            dispatch_result_toast(&toaster, &result);
+        }
+    });
+
     view! {
         <div class="admin-action-card">
             <h2>"Unblacklist Account"</h2>
@@ -196,7 +249,6 @@ fn UnblacklistAccountForm() -> impl IntoView {
             >
                 "Unblacklist"
             </Button>
-            <ActionStatus action=action />
         </div>
     }
 }
@@ -208,6 +260,7 @@ fn WithdrawPlatformFeeForm() -> impl IntoView {
         .public_key;
     let receiver = RwSignal::new(String::new());
     let amount = RwSignal::new(String::new());
+    let toaster = ToasterInjection::expect_context();
 
     let action = Action::new_unsync(move |_| async move {
         #[cfg(feature = "hydrate")]
@@ -231,6 +284,12 @@ fn WithdrawPlatformFeeForm() -> impl IntoView {
         Ok::<String, crate::error::AppError>(String::new())
     });
 
+    Effect::new(move || {
+        if let Some(result) = action.value().get() {
+            dispatch_result_toast(&toaster, &result);
+        }
+    });
+
     view! {
         <div class="admin-action-card">
             <h2>"Withdraw Platform Fee"</h2>
@@ -248,24 +307,6 @@ fn WithdrawPlatformFeeForm() -> impl IntoView {
             >
                 "Withdraw"
             </Button>
-            <ActionStatus action=action />
         </div>
-    }
-}
-
-#[component]
-fn ActionStatus(action: Action<(), Result<String, crate::error::AppError>>) -> impl IntoView {
-    view! {
-        <p class="action-status">
-            {move || {
-                action
-                    .value()
-                    .get()
-                    .map(|result| match result {
-                        Ok(sig) => format!("Success: {sig}"),
-                        Err(e) => format!("Error: {e}"),
-                    })
-            }}
-        </p>
     }
 }

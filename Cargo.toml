@@ -61,6 +61,7 @@ reqwest = { version = "0.13.2", features = ["json"], optional = true }
 aes-gcm = "0.10.3"
 base64 = "0.22.1"
 getrandom = { version = "0.2", features = ["js"] }
+glitterbomb = { version = "0.1.2", optional = true }
 
 [features]
 hydrate = [
@@ -71,6 +72,7 @@ hydrate = [
     "dep:wasm-bindgen",
     "dep:js-sys",
     "dep:web-sys",
+    "dep:glitterbomb",
 ]
 ssr = [
     "fetch",

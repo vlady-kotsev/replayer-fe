@@ -1,7 +1,7 @@
 use leptos::prelude::*;
 use thaw::{
     Button, Card, CardFooter, CardHeader, CardHeaderDescription, Image, ImageShape, Spinner,
-    SpinnerSize,
+    SpinnerSize, Toast, ToastBody, ToastIntent, ToastOptions, ToastTitle, ToasterInjection,
 };
 
 use crate::{
@@ -34,6 +34,8 @@ pub fn GameCard(game: FetchedGameMetadata, refetch_trigger: RwSignal<usize>) -> 
         }
     });
 
+    let toaster = ToasterInjection::expect_context();
+
     let dev_for_buy = developer.clone();
     let name_for_buy = game_name.clone();
     let buy_action: Action<(), Result<String, crate::error::AppError>> =
@@ -59,11 +61,52 @@ pub fn GameCard(game: FetchedGameMetadata, refetch_trigger: RwSignal<usize>) -> 
             }
         });
 
+    Effect::new(move || {
+        if let Some(result) = buy_action.value().get() {
+            match result {
+                Ok(_) => {
+                    toaster.dispatch_toast(
+                        move || {
+                            view! {
+                                <Toast>
+                                    <ToastTitle>"Game Purchased"</ToastTitle>
+                                    <ToastBody>"Your game will be available to play shortly."</ToastBody>
+                                </Toast>
+                            }
+                        },
+                        ToastOptions::default().with_intent(ToastIntent::Success),
+                    );
+                    #[cfg(feature = "hydrate")]
+                    {
+                        glitterbomb::cannon();
+                    }
+                }
+                Err(ref e) => {
+                    leptos::logging::log!("Buy error: {e}");
+                    toaster.dispatch_toast(
+                        move || {
+                            view! {
+                                <Toast>
+                                    <ToastTitle>"Error"</ToastTitle>
+                                    <ToastBody>"Something went wrong. Please try again."</ToastBody>
+                                </Toast>
+                            }
+                        },
+                        ToastOptions::default().with_intent(ToastIntent::Error),
+                    );
+                }
+            }
+        }
+    });
+
     view! {
+        <div class="game-card">
         <Card>
             <CardHeader>
                 <h3>{game_name}</h3>
-                <CardHeaderDescription slot>{price_text}</CardHeaderDescription>
+                <CardHeaderDescription slot>
+                    <span class="game-price">{price_text}</span>
+                </CardHeaderDescription>
             </CardHeader>
             <p class="game-supply">"Supply: " {supply_text}</p>
              <Image src={game.data.game_uri} width="200px" height="200px" shape=ImageShape::Rounded/>
@@ -77,7 +120,7 @@ pub fn GameCard(game: FetchedGameMetadata, refetch_trigger: RwSignal<usize>) -> 
                                 .get()
                                 .map(|owned| {
                                     if owned {
-                                        view! { <p>"Purchased"</p> }.into_any()
+                                        view! { <Button disabled=true>"Purchased"</Button> }.into_any()
                                     } else {
                                         view! {
                                             <Button
@@ -97,5 +140,6 @@ pub fn GameCard(game: FetchedGameMetadata, refetch_trigger: RwSignal<usize>) -> 
                 </CardFooter>
             </Show>
         </Card>
+        </div>
     }
 }

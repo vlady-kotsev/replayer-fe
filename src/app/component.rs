@@ -8,12 +8,12 @@ use leptos_router::{
     StaticSegment,
 };
 use leptos_use::storage::{use_local_storage_with_options, UseStorageOptions};
-use thaw::{ConfigProvider, Theme};
+use thaw::{ConfigProvider, Theme, ToasterProvider};
 
 use crate::{
     app::WalletPublicKeyContext,
     components::{AdminRoute, Footer, Nav},
-    pages::{AdminDashboard, BuyGamePage, HomePage, PlayPage, PublishGamePage},
+    pages::{AdminDashboard, BuyGamePage, HomePage, HowItWorksPage, PlayPage, PublishGamePage},
     utils::LS_PUBLIC_KEY,
 };
 
@@ -41,19 +41,22 @@ pub fn App() -> impl IntoView {
 
         <Router>
             <ConfigProvider theme=RwSignal::new(Theme::dark())>
-                <Nav />
-                <main class="main-content">
-                    <Routes fallback=|| "Page not found.".into_view()>
-                        <Route path=StaticSegment("") view=HomePage />
-                        <Route path=StaticSegment("/buy") view=BuyGamePage />
-                        <Route path=StaticSegment("/play") view=PlayPage />
-                        <Route path=StaticSegment("/publish") view=PublishGamePage />
-                        <ParentRoute path=StaticSegment("/admin") view=AdminRoute>
-                            <Route path=StaticSegment("") view=AdminDashboard />
-                        </ParentRoute>
-                    </Routes>
-                </main>
-                <Footer />
+                <ToasterProvider>
+                    <Nav />
+                    <main class="main-content">
+                        <Routes fallback=|| "Page not found.".into_view()>
+                            <Route path=StaticSegment("") view=HomePage />
+                            <Route path=StaticSegment("/buy") view=BuyGamePage />
+                            <Route path=StaticSegment("/how-it-works") view=HowItWorksPage />
+                            <Route path=StaticSegment("/play") view=PlayPage />
+                            <Route path=StaticSegment("/publish") view=PublishGamePage />
+                            <ParentRoute path=StaticSegment("/admin") view=AdminRoute>
+                                <Route path=StaticSegment("") view=AdminDashboard />
+                            </ParentRoute>
+                        </Routes>
+                    </main>
+                    <Footer />
+                </ToasterProvider>
             </ConfigProvider>
         </Router>
     }

@@ -1,0 +1,41 @@
+@use '../variables' as *;
+
+.home-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.5rem;
+}
+
+.home-title {
+  font-size: 4rem;
+  color: $neon-blue;
+  text-shadow: 0 0 14px rgba($neon-blue, 0.6), 0 0 40px rgba($accent-purple, 0.3);
+}
+
+.home-subtitle {
+  font-size: 1.6rem;
+  color: $text-secondary;
+}
+
+.home-hero-link {
+  transition: transform $transition-fast;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.home-hero {
+  max-width: 100%;
+  width: 700px;
+  border-radius: 12px;
+  border: 2px solid $accent-purple;
+  box-shadow: 0 0 20px rgba($accent-purple, 0.4), 0 0 60px rgba($neon-blue, 0.15);
+  transition: box-shadow $transition-fast;
+
+  .home-hero-link:hover & {
+    box-shadow: 0 0 30px rgba($accent-purple, 0.6), 0 0 80px rgba($neon-blue, 0.3);
+  }
+}

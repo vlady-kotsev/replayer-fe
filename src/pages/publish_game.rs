@@ -5,10 +5,13 @@ use crate::components::{DeveloperGate, GameUpload};
 #[component]
 pub fn PublishGamePage() -> impl IntoView {
     view! {
-        <h1>Publish Game</h1>
+        <h1>"Publish Game"</h1>
 
-        <DeveloperGate>
-            <GameUpload />
-        </DeveloperGate>
+        <div class="publish-layout">
+            <img class="publish-hero" src="/publish-game.png" alt="Publish Game" />
+            <DeveloperGate>
+                <GameUpload />
+            </DeveloperGate>
+        </div>
     }
 }

@@ -3,24 +3,25 @@ use js_sys::Uint8Array;
 use wasm_bindgen::JsCast;
 use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement, KeyboardEvent};
 
+const NEON_COLORS: &[&str] = &["#ff00ff", "#39ff14", "#00d4ff", "#ff1744"];
+
 pub struct EmuWasm {
     chip8: Emulator,
     ctx: CanvasRenderingContext2d,
+    color: &'static str,
 }
 
 impl EmuWasm {
-    pub fn new() -> EmuWasm {
+    pub fn new() -> Option<EmuWasm> {
         let chip8 = Emulator::new();
-        let document = web_sys::window().unwrap().document().unwrap();
-        let canvas = document.get_element_by_id("canvas").unwrap();
-        let canvas: HtmlCanvasElement = canvas.dyn_into::<HtmlCanvasElement>().unwrap();
+        let document = web_sys::window()?.document()?;
+        let canvas = document.get_element_by_id("canvas")?;
+        let canvas: HtmlCanvasElement = canvas.dyn_into::<HtmlCanvasElement>().ok()?;
         let ctx = canvas
             .get_context("2d")
-            .unwrap()
-            .unwrap()
-            .dyn_into::<CanvasRenderingContext2d>()
-            .unwrap();
-        EmuWasm { chip8, ctx }
+            .ok()?
+            .and_then(|obj| obj.dyn_into::<CanvasRenderingContext2d>().ok())?;
+        Some(EmuWasm { chip8, ctx, color: NEON_COLORS[0] })
     }
 
     pub fn tick(&mut self) {
@@ -43,6 +44,8 @@ impl EmuWasm {
     }
 
     pub fn load_game(&mut self, data: Uint8Array) {
+        let idx = (js_sys::Math::random() * NEON_COLORS.len() as f64) as usize;
+        self.color = NEON_COLORS[idx.min(NEON_COLORS.len() - 1)];
         self.chip8.load(&data.to_vec());
     }
 
@@ -53,7 +56,7 @@ impl EmuWasm {
 
         self.ctx.set_fill_style_str("black");
         self.ctx.fill_rect(0.0, 0.0, canvas_w, canvas_h);
-        self.ctx.set_fill_style_str("magenta");
+        self.ctx.set_fill_style_str(self.color);
 
         for i in 0..(SCREEN_WIDTH * SCREEN_HEIGHT) {
             if disp[i] {

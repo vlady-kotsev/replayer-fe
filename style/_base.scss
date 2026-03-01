@@ -13,9 +13,11 @@ html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 body {
+  overflow-x: hidden;
   font-family: "Bitcount Grid Double", system-ui;
   font-optical-sizing: auto;
   font-weight: 400;
@@ -60,6 +62,24 @@ h1 {
   margin-bottom: 1rem;
 }
 
+h2 {
+  color: $text-bright;
+  font-size: 1.8rem;
+  font-weight: 400;
+  margin-bottom: 0.75rem;
+}
+
+h3 {
+  color: $text-bright;
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
+p {
+  font-size: 1.3rem;
+}
+
 // --- Primary button (reusable) ---
 .btn-primary {
   display: inline-block;
@@ -84,9 +104,20 @@ h1 {
 .thaw-config-provider {
   display: flex;
   flex-direction: column;
-
   height: 100vh;
   background-color: transparent !important;
+  font-family: "Bitcount Grid Double", system-ui !important;
+}
+
+.thaw-toaster-wrapper {
+  pointer-events: none;
+  height: auto !important;
+  display: block !important;
+  background-color: transparent !important;
+}
+
+.thaw-toaster-container {
+  pointer-events: all;
 }
 
 input, select, textarea {
